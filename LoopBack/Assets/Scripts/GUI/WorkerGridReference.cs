@@ -9,6 +9,16 @@ public class WorkerGridReference : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        positions = GetComponentsInChildren<WorkerGridPattern>();    
+        positions = GetComponentsInChildren<WorkerGridPattern>();
+    }
+
+    public Vector3[] GetGridFor(int numWorkers)
+    {
+        return positions[numWorkers - 1].GetPositions();
+    }
+
+    public float GetCellSizeFor(int numWorkers)
+    {
+        return positions[numWorkers - 1].GetCellSize();
     }
 }

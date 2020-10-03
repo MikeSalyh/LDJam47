@@ -6,7 +6,7 @@ using System.Linq;
 public class Workforce : MonoBehaviour
 {
     public List<Worker> workers;
-    private Worker activeWorker;
+    protected Worker activeWorker;
     public int wordLength = 3;
 
     // Update is called once per frame

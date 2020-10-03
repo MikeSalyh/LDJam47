@@ -16,6 +16,8 @@ public class Worker
     public float newAskDuration = 10f;
     public float wordCompletePause = 1f;
 
+    public GameObject visualRepresentation;
+
     public float LastWordRequestedTime { get; protected set;  }
     public float LastWordCompleteTime { get; protected set;  }
     public float AskDuration { get; protected set; }

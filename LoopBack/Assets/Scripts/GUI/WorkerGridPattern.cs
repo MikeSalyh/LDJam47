@@ -16,7 +16,7 @@ public class WorkerGridPattern : MonoBehaviour
         Vector3[] gridPositions = new Vector3[allCells.Length];
         for (int i = 0; i < allCells.Length; i++)
         {
-            gridPositions[i] = allCells[i].GetComponent<RectTransform>().anchoredPosition;
+            gridPositions[i] = allCells[i].GetComponent<RectTransform>().position;
         }
         return gridPositions;
     }

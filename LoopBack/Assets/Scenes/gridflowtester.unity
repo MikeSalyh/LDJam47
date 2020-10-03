@@ -381,7 +381,8 @@ MonoBehaviour:
   wordLength: 3
   workerVisualObject: {fileID: 8507141393161130162, guid: 732007735974eb74ca1dd2e611ea5086,
     type: 3}
-  workerParent: {fileID: 1965377628}
+  workerParent: {fileID: 1965377627}
+  workerGrid: {fileID: 1003812055}
 --- !u!114 &930051534
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -698,20 +699,25 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &1965377628
-Transform:
+--- !u!224 &1965377628
+RectTransform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1965377627}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 27.639252, y: 35.03119, z: -60.9375}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 1946893814}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0, y: 0}
+  m_AnchorMax: {x: 1, y: 1}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
+  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!1 &2138432305 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6381940482282855964, guid: 282c62e9b60c64b4c845722edde0e901,

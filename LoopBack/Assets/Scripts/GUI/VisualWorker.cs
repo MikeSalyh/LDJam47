@@ -14,9 +14,15 @@ namespace Work.GUI
         public Slider timeRemaining;
         public Image background;
         private Color defaultColor;
+        private RectTransform rt;
 
         private static readonly string workStartString = "<color=yellow>";
         private static readonly string workEndString = "</color>";
+
+        private void Awake()
+        {
+            rt = GetComponent<RectTransform>();
+        }
 
         private void Start()
         {
@@ -63,6 +69,7 @@ namespace Work.GUI
         public void SetWorker(Worker w)
         {
             AssociatedWorker = w;
+            w.visualRepresentation = this.gameObject;
         }
 
         private string GenerateLabel()
@@ -79,6 +86,13 @@ namespace Work.GUI
                 output += AssociatedWorker.CurrentWord[i];
             }
             return output;
+        }
+
+
+        public void Reposition(Vector3 newPosition, float newScale)
+        {
+            rt.sizeDelta = Vector2.one * newScale;
+            rt.position = newPosition;
         }
 
         private void OnDisable()
