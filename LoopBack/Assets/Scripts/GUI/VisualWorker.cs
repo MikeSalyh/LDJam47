@@ -36,6 +36,7 @@ namespace Work.GUI
             defaultColor = background.color;
             AssociatedWorker.OnRequestNewWord += ResetBackground;
             AssociatedWorker.OnSelected += TintBackground;
+            AssociatedWorker.OnFired += HandleFired;
         }
 
         // Update is called once per frame
@@ -55,10 +56,6 @@ namespace Work.GUI
                         HandleTimeRemaining();
                         timeLeftLabel.text = AssociatedWorker.TimeRemainingOnAsk.ToString("0");
                     }
-                }
-                else
-                {
-                    background.color = Color.red;
                 }
             }
         }
@@ -127,6 +124,13 @@ namespace Work.GUI
         {
             AssociatedWorker.OnRequestNewWord -= ResetBackground;
             AssociatedWorker.OnSelected -= TintBackground;
+            AssociatedWorker.OnFired -= HandleFired;
+        }
+
+        private void HandleFired()
+        {
+            background.color = Color.black;
+            wordLabel.text = "<color=red>FIRED!</color>";
         }
     }
 }

@@ -27,6 +27,13 @@ public class Workforce : MonoBehaviour
                 workers[i].DoWork();
             }
         }
+        else if (Input.GetKeyDown(KeyCode.Alpha3))
+        {
+            for (int i = 0; i < workers.Count; i++)
+            {
+                workers[i].ResetTime();
+            }
+        }
     }
 
     protected virtual void UpdateWorkers()

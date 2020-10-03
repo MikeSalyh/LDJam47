@@ -66,10 +66,17 @@ public class Worker
         WorkDone = 0;
     }
 
+    public void ResetTime()
+    {
+        LastWordRequestedTime = Time.time;
+        AskDuration = newAskDuration;
+    }
+
 
     public void FireMe()
     {
         Fired = true;
+        CurrentWord = string.Empty;
         if(OnFired != null)
             OnFired.Invoke();
     }
@@ -99,7 +106,7 @@ public class Worker
         }
         else
         {
-            if (TimeRemainingOnCompletionDelay < 0)
+            if (!Fired && TimeRemainingOnCompletionDelay < 0)
             {
                 if(OnRequestNewWord != null)
                     OnRequestNewWord.Invoke(this);
