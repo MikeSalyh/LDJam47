@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using DG.Tweening;
 
 namespace Work.GUI
 {
+    [RequireComponent(typeof(CanvasGroup))]
     public class VisualWorker : MonoBehaviour
     {
         public Worker AssociatedWorker { get; private set; }
@@ -15,6 +17,8 @@ namespace Work.GUI
         public Image background;
         private Color defaultColor;
         private RectTransform rt;
+        private CanvasGroup cg;
+        public float transitionTime = 0.5f;
 
         private static readonly string workStartString = "<color=yellow>";
         private static readonly string workEndString = "</color>";
@@ -22,6 +26,7 @@ namespace Work.GUI
         private void Awake()
         {
             rt = GetComponent<RectTransform>();
+            cg = GetComponent<CanvasGroup>();
         }
 
         private void Start()
@@ -88,14 +93,28 @@ namespace Work.GUI
             return output;
         }
 
-
-        public void Reposition(Vector3 newPosition, float newScale)
+        public void Reposition(Vector3 newPosition, float newScale, bool snapToPosition = false)
         {
-            rt.sizeDelta = Vector2.one * newScale;
-            rt.position = newPosition;
+            if (snapToPosition)
+            {
+                rt.sizeDelta = Vector2.one * newScale;
+                rt.position = newPosition;
+            }
+            else
+            {
+                rt.DOSizeDelta(Vector2.one * newScale, transitionTime).SetEase(Ease.InOutSine);
+                rt.DOMove(newPosition, transitionTime).SetEase(Ease.InOutSine);
+            }
         }
 
-        private void OnDisable()
+        private void OnEnable()
+        {
+            cg.alpha = 0f;
+            cg.DOFade(1f, transitionTime);
+            rt.sizeDelta = Vector3.zero;
+        }
+
+        private void OnDestroy()
         {
             AssociatedWorker.OnRequestNewWord -= ResetBackground;
             AssociatedWorker.OnSelected -= TintBackground;
