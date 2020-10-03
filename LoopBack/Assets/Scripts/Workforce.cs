@@ -1,10 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 public class Workforce : MonoBehaviour
 {
     public List<Worker> workers;
+    private Worker activeWorker;
+    public int wordLength = 3;
 
     // Update is called once per frame
     protected virtual void Update()
@@ -34,8 +37,20 @@ public class Workforce : MonoBehaviour
     protected virtual Worker AddWorker()
     {
         Worker newWorker = new Worker();
-        newWorker.RequestNewWord();
+        newWorker.OnRequestNewWord += GenerateNewWord;
+        GenerateNewWord(newWorker);
         workers.Add(newWorker);
         return newWorker;
+    }
+
+    protected virtual void GenerateNewWord(Worker w)
+    {
+        List<char> bannedCharacters = new List<char>();
+        for (int i = 0; i < workers.Count; i++)
+        {
+            if (!workers[i].Fired && !string.IsNullOrEmpty(workers[i].CurrentWord))
+                bannedCharacters.Add(workers[i].CurrentWord[0]);
+        }
+        w.SetWord(WordParser.GetRandomWord(wordLength, bannedCharacters.ToArray()));
     }
 }

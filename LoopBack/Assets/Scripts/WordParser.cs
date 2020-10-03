@@ -26,41 +26,34 @@ public class WordParser : MonoBehaviour
         Debug.Log("Generated all the words");
     }
 
-    public static string GetRandomWord(int charLength)
+    public static string GetRandomWord(int charLength, char[] bannedCharacters = null, int maxAttempts = 10)
     {
-        return allWords[charLength - shortedWordLength + 1][UnityEngine.Random.Range(0, allWords[charLength - shortedWordLength + 1].Length)].ToLowerInvariant();
-    }
+        string suggestedWord = allWords[charLength - shortedWordLength + 1][UnityEngine.Random.Range(0, allWords[charLength - shortedWordLength + 1].Length)].ToLowerInvariant();
+        if (bannedCharacters == null)
+            return suggestedWord;
 
-    // Update is called once per frame
-    void Update()
-    {
-        //if (Input.GetKeyDown(KeyCode.Alpha2))
-        //{
-        //    Debug.Log("Outputting a 2: " + GetRandomWord(2));
-        //}
-        //if (Input.GetKeyDown(KeyCode.Alpha3))
-        //{
-        //    Debug.Log("Outputting a 3: " + GetRandomWord(3));
-        //}
-        //if (Input.GetKeyDown(KeyCode.Alpha4))
-        //{
-        //    Debug.Log("Outputting a 4: " + GetRandomWord(4));
-        //}
-        //if (Input.GetKeyDown(KeyCode.Alpha5))
-        //{
-        //    Debug.Log("Outputting a 5: " + GetRandomWord(5));
-        //}
-        //if (Input.GetKeyDown(KeyCode.Alpha6))
-        //{
-        //    Debug.Log("Outputting a 6: " + GetRandomWord(6));
-        //}
-        //if (Input.GetKeyDown(KeyCode.Alpha7))
-        //{
-        //    Debug.Log("Outputting a 7: " + GetRandomWord(7));
-        //}
-        //if (Input.GetKeyDown(KeyCode.Alpha8))
-        //{
-        //    Debug.Log("Outputting a 8: " + GetRandomWord(8));
-        //}
+        bool reroll = false;
+        for (int i = 0; i < bannedCharacters.Length; i++)
+        {
+            if (suggestedWord[0] == bannedCharacters[i])
+            {
+                Debug.Log("regenerating word [" + suggestedWord + "] because the letter " + bannedCharacters[i] + " is already in use.");
+                reroll = true;
+            }
+        }
+
+        if (reroll && maxAttempts > 0)
+        {
+            //Re-run the randomization if the letter is already in use.
+            maxAttempts--;
+            return GetRandomWord(charLength, bannedCharacters, maxAttempts);
+        }
+        else
+        {
+            if (maxAttempts <= 0)
+                Debug.LogWarning("Two words with the same letter were generated.");
+
+            return suggestedWord;
+        }
     }
 }

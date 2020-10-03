@@ -58,14 +58,14 @@ namespace Work.GUI
         {
             string output = workStartString;
             bool closedColor = false;
-            for (int i = 0; i < AssociatedWorker.RequestedWord.Length; i++)
+            for (int i = 0; i < AssociatedWorker.CurrentWord.Length; i++)
             {
                 if (AssociatedWorker.WorkDone <= i && !closedColor)
                 {
                     closedColor = true;
                     output += workEndString;
                 }
-                output += AssociatedWorker.RequestedWord[i];
+                output += AssociatedWorker.CurrentWord[i];
             }
             return output;
         }
