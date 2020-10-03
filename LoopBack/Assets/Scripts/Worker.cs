@@ -42,6 +42,11 @@ public class Worker
         get { return (LastWordCompleteTime + wordCompletePause) - Time.time; }
     }
 
+    public char NextLetter
+    {
+        get { return CurrentWord[WorkDone]; }
+    }
+
     public Worker()
     {
     }

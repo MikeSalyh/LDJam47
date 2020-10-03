@@ -13,6 +13,9 @@ public class Workforce : MonoBehaviour
     protected virtual void Update()
     {
         UpdateWorkers();
+        HandleInput();
+
+        //Debug:
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
             AddWorker();
@@ -38,6 +41,7 @@ public class Workforce : MonoBehaviour
     {
         Worker newWorker = new Worker();
         newWorker.OnRequestNewWord += GenerateNewWord;
+        newWorker.OnFinishWord += ReleaseActiveWorker;
         GenerateNewWord(newWorker);
         workers.Add(newWorker);
         return newWorker;
@@ -52,5 +56,41 @@ public class Workforce : MonoBehaviour
                 bannedCharacters.Add(workers[i].CurrentWord[0]);
         }
         w.SetWord(WordParser.GetRandomWord(wordLength, bannedCharacters.ToArray()));
+    }
+
+    protected virtual void ReleaseActiveWorker(Worker w)
+    {
+        activeWorker = null;
+    }
+
+    private void HandleInput()
+    {
+        string reqChar;
+        if (activeWorker != null && !activeWorker.Fired && !activeWorker.WordComplete)
+        {
+            reqChar = activeWorker.NextLetter.ToString().ToLowerInvariant();
+            if (!string.IsNullOrEmpty(reqChar) && Input.GetKeyDown(reqChar))
+            {
+                activeWorker.DoWork();
+            }
+        } else {
+            for (int i = 0; i < workers.Count; i++)
+            {
+                if (workers[i].Fired || workers[i].WordComplete)
+                    continue;
+
+                reqChar = workers[i].NextLetter.ToString().ToLowerInvariant();
+                if (string.IsNullOrEmpty(reqChar))
+                    continue;
+
+                Debug.Log(reqChar);
+                if (Input.GetKeyDown(reqChar))
+                {
+                    activeWorker = workers[i];
+                    activeWorker.DoWork();
+                    break;
+                }
+            }
+        }
     }
 }
