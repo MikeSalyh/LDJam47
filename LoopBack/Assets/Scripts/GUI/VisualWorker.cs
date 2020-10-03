@@ -13,7 +13,7 @@ namespace Work.GUI
         public Worker AssociatedWorker { get; private set; }
         public TextMeshProUGUI wordLabel;
         public TextMeshProUGUI timeLeftLabel;
-        public Slider[] timeRemainingArray;
+        public Slider timeRemaining;
         public Image background;
         private Color defaultColor;
         private RectTransform rt;
@@ -66,10 +66,7 @@ namespace Work.GUI
         private void HandleTimeRemaining()
         {
             float t = 1 - Mathf.InverseLerp(AssociatedWorker.AskDuration, 0f, AssociatedWorker.TimeRemainingOnAsk);
-            timeRemainingArray[0].value = Mathf.InverseLerp(0.75f, 1f, t);
-            timeRemainingArray[1].value = Mathf.InverseLerp(0.5f, 0.75f, t);
-            timeRemainingArray[2].value = Mathf.InverseLerp(0.25f, 0.5f, t);
-            timeRemainingArray[3].value = Mathf.InverseLerp(0f, 0.25f, t);
+            timeRemaining.value = t;
         }
 
         private void ResetBackground(Worker w = null)
