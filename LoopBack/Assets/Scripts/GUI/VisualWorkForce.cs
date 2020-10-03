@@ -27,5 +27,16 @@ namespace Work.GUI
                 workers[i].visualRepresentation.GetComponent<VisualWorker>().Reposition(newGridPositions[i], newGridSize);
             }
         }
+
+
+        protected override void ReleaseActiveWorker(Worker w)
+        {
+            if (activeWorker != null)
+            {
+                VisualWorker vw = activeWorker.visualRepresentation.GetComponent<VisualWorker>();
+                vw.ResetBackground();
+            }
+            base.ReleaseActiveWorker(w);
+        }
     }
 }

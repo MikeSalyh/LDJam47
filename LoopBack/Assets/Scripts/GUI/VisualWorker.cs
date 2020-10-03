@@ -62,11 +62,11 @@ namespace Work.GUI
 
         private void HandleTimeRemaining()
         {
-            float t = 1 - Mathf.InverseLerp(AssociatedWorker.AskDuration, 0f, AssociatedWorker.TimeRemainingOnAsk);
+            float t = 1 - Mathf.InverseLerp(AssociatedWorker.newAskDuration, 0f, AssociatedWorker.TimeRemainingOnAsk);
             timeRemaining.value = t;
         }
 
-        private void ResetBackground(Worker w = null)
+        public void ResetBackground(Worker w = null)
         {
             background.color = defaultColor;
         }

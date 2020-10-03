@@ -9,38 +9,47 @@ public class Workforce : MonoBehaviour
     protected Worker activeWorker;
     public int wordLength = 3;
 
+    public enum WorkState
+    {
+        workday,
+        onbreak,
+        fired,
+        paused
+    }
+    public WorkState currentWorkState = WorkState.workday;
+
     // Update is called once per frame
     protected virtual void Update()
     {
-        UpdateWorkers();
-        HandleInput();
+        if (currentWorkState == WorkState.workday)
+        {
+            UpdateWorkers(Time.deltaTime);
+            HandleInput();
 
-        //Debug:
-        if (Input.GetKeyDown(KeyCode.Alpha1))
-        {
-            AddWorker();
-        }
-        else if (Input.GetKeyDown(KeyCode.Alpha2))
-        {
-            for (int i = 0; i < workers.Count; i++)
+            //Debug:
+            if (Input.GetKeyDown(KeyCode.Alpha1))
             {
-                workers[i].DoWork();
+                AddWorker();
             }
-        }
-        else if (Input.GetKeyDown(KeyCode.Alpha3))
-        {
-            for (int i = 0; i < workers.Count; i++)
+            else if (Input.GetKeyDown(KeyCode.Alpha2))
             {
-                workers[i].ResetTime();
+                for (int i = 0; i < workers.Count; i++)
+                {
+                    workers[i].DoWork();
+                }
+            }
+            else if (Input.GetKeyDown(KeyCode.Alpha3))
+            {
+                HandleWorkerFired();
             }
         }
     }
 
-    protected virtual void UpdateWorkers()
+    protected virtual void UpdateWorkers(float deltaTime)
     {
         for (int i = 0; i < workers.Count; i++)
         {
-            workers[i].UpdateWorker();
+            workers[i].UpdateWorker(deltaTime);
         }
     }
 
@@ -49,9 +58,26 @@ public class Workforce : MonoBehaviour
         Worker newWorker = new Worker();
         newWorker.OnRequestNewWord += GenerateNewWord;
         newWorker.OnFinishWord += ReleaseActiveWorker;
+        newWorker.OnFired += HandleWorkerFired;
         GenerateNewWord(newWorker);
         workers.Add(newWorker);
         return newWorker;
+    }
+
+    private void HandleWorkerFired()
+    {
+        if(currentWorkState == WorkState.workday)
+            StartCoroutine(HandleWorkerFiredCoroutine());
+    }
+
+    protected IEnumerator HandleWorkerFiredCoroutine()
+    {
+        currentWorkState = WorkState.fired;
+        yield return new WaitForSeconds(3f);
+        for (int i = 0; i < workers.Count; i++)
+            workers[i].ResetCurrentWord();
+        ReleaseActiveWorker(activeWorker);
+        currentWorkState = WorkState.workday;
     }
 
     protected virtual void GenerateNewWord(Worker w)

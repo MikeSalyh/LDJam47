@@ -18,9 +18,6 @@ public class Worker
 
     public GameObject visualRepresentation;
 
-    public float LastWordRequestedTime { get; protected set;  }
-    public float LastWordCompleteTime { get; protected set;  }
-    public float AskDuration { get; protected set; }
     public string CurrentWord { get; protected set; }
     public int WorkDone { get; protected set; }
 
@@ -33,16 +30,18 @@ public class Worker
         get { return !string.IsNullOrEmpty(CurrentWord); }
     }
 
-    public bool Fired { get; private set; }
+    public bool Fired { get; protected set; }
 
     public float TimeRemainingOnAsk
     {
-        get { return (LastWordRequestedTime + AskDuration) - Time.time; }
+        get; protected set;
+        //get { return (LastWordRequestedTime + AskDuration) - Time.time; }
     }
 
     public float TimeRemainingOnCompletionDelay
     {
-        get { return (LastWordCompleteTime + wordCompletePause) - Time.time; }
+        get; protected set;
+        //get { return (LastWordCompleteTime + wordCompletePause) - Time.time; }
     }
 
     public char NextLetter
@@ -56,20 +55,18 @@ public class Worker
 
     public void SetWord(string newWord)
     {
-        LastWordRequestedTime = Time.time;
-        if (addBonusTime)
-            AskDuration = Mathf.Max(TimeRemainingOnAsk, 0) + newAskDuration;
-        else
-            AskDuration = newAskDuration;
-
+        TimeRemainingOnAsk = newAskDuration;
         CurrentWord = newWord;
         WorkDone = 0;
     }
 
-    public void ResetTime()
+    public void ResetCurrentWord()
     {
-        LastWordRequestedTime = Time.time;
-        AskDuration = newAskDuration;
+        if (!WordComplete)
+        {
+            WorkDone = 0;
+            TimeRemainingOnAsk = newAskDuration;
+        }
     }
 
 
@@ -89,14 +86,19 @@ public class Worker
         {
             //Word is finished
             Debug.Log("The word " + CurrentWord + " was completed.");
-            LastWordCompleteTime = Time.time;
+            TimeRemainingOnCompletionDelay = wordCompletePause;
             if(OnFinishWord != null)
                 OnFinishWord.Invoke(this);
         }
     }
 
-    public void UpdateWorker()
+    public void UpdateWorker(float deltaTime)
     {
+        if(TimeRemainingOnAsk > 0)
+            TimeRemainingOnAsk -= deltaTime;
+        if (TimeRemainingOnCompletionDelay > 0)
+            TimeRemainingOnCompletionDelay -= deltaTime;
+
         if (!WordComplete)
         {
             if (!Fired && TimeRemainingOnAsk < 0)
