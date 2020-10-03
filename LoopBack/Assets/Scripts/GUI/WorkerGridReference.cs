@@ -10,6 +10,8 @@ public class WorkerGridReference : MonoBehaviour
     void Start()
     {
         positions = GetComponentsInChildren<WorkerGridPattern>();
+        if (GetComponent<CanvasGroup>() != null)
+            GetComponent<CanvasGroup>().alpha = 0;
     }
 
     public Vector3[] GetGridFor(int numWorkers)
