@@ -11,6 +11,7 @@ namespace Work.GUI {
         public Slider progressToNext;
         public CanvasGroup cg;
         public Button takeBreakButton;
+        public Workforce workforce;
 
         // Start is called before the first frame update
         void Start()
@@ -21,7 +22,8 @@ namespace Work.GUI {
         // Update is called once per frame
         void Update()
         {
-
+            progressToNext.value = workforce.NextBreakPercent;
+            count.text = workforce.BreaksAvailable.ToString();
         }
     }
 }

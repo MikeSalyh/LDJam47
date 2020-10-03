@@ -13,6 +13,8 @@ public class Workforce : MonoBehaviour
     public int BreaksAvailable { get; private set; }
     public int maxLives = 3;
     public int LivesLeft { get; private set; }
+    public float breakAmountPerChar = 1/50;
+    public float NextBreakPercent { get; private set; }
 
     public enum WorkState
     {
@@ -158,6 +160,7 @@ public class Workforce : MonoBehaviour
             if (!string.IsNullOrEmpty(reqChar) && Input.GetKeyDown(reqChar))
             {
                 activeWorker.DoWork();
+                GenerateBreakValue();
             }
         } else {
             for (int i = 0; i < workers.Count; i++)
@@ -175,9 +178,20 @@ public class Workforce : MonoBehaviour
                     if(workers[i].OnSelected != null)
                         workers[i].OnSelected.Invoke(workers[i]); //This is a little janky, no?
                     activeWorker.DoWork();
+                    GenerateBreakValue();
                     break;
                 }
             }
+        }       
+    }
+
+    private void GenerateBreakValue()
+    {
+        NextBreakPercent += breakAmountPerChar;
+        if (NextBreakPercent > 1f)
+        {
+            BreaksAvailable++;
+            NextBreakPercent %= 1;
         }
     }
 }

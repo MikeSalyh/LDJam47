@@ -407,6 +407,7 @@ MonoBehaviour:
   wordLength: 3
   maxBreaks: 3
   maxLives: 3
+  breakAmountPerChar: 0
   currentWorkState: 0
   workerVisualObject: {fileID: 8507141393161130162, guid: 732007735974eb74ca1dd2e611ea5086,
     type: 3}
@@ -3116,6 +3117,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1946893814}
     m_Modifications:
+    - target: {fileID: -247345175154275371, guid: 8d9ecf5c32cbaf84381bf6561bd437ec,
+        type: 3}
+      propertyPath: workforce
+      value: 
+      objectReference: {fileID: 930051533}
     - target: {fileID: 6464133266565626489, guid: 8d9ecf5c32cbaf84381bf6561bd437ec,
         type: 3}
       propertyPath: m_LocalPosition.x
