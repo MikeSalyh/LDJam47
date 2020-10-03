@@ -13,12 +13,13 @@ namespace Work.GUI
         public Worker AssociatedWorker { get; private set; }
         public TextMeshProUGUI wordLabel;
         public TextMeshProUGUI timeLeftLabel;
-        public Slider timeRemaining;
+        public Slider[] timeRemainingArray;
         public Image background;
         private Color defaultColor;
         private RectTransform rt;
         private CanvasGroup cg;
         public float transitionTime = 0.5f;
+        private float defaultSize;
 
         private static readonly string workStartString = "<color=yellow>";
         private static readonly string workEndString = "</color>";
@@ -26,6 +27,7 @@ namespace Work.GUI
         private void Awake()
         {
             rt = GetComponent<RectTransform>();
+            defaultSize = rt.sizeDelta.x;
             cg = GetComponent<CanvasGroup>();
         }
 
@@ -50,7 +52,7 @@ namespace Work.GUI
                     }
                     else
                     {
-                        timeRemaining.value = 1 - Mathf.InverseLerp(AssociatedWorker.AskDuration, 0f, AssociatedWorker.TimeRemainingOnAsk);
+                        HandleTimeRemaining();
                         timeLeftLabel.text = AssociatedWorker.TimeRemainingOnAsk.ToString("0");
                     }
                 }
@@ -59,6 +61,15 @@ namespace Work.GUI
                     background.color = Color.red;
                 }
             }
+        }
+
+        private void HandleTimeRemaining()
+        {
+            float t = 1 - Mathf.InverseLerp(AssociatedWorker.AskDuration, 0f, AssociatedWorker.TimeRemainingOnAsk);
+            timeRemainingArray[0].value = Mathf.InverseLerp(0.75f, 1f, t);
+            timeRemainingArray[1].value = Mathf.InverseLerp(0.5f, 0.75f, t);
+            timeRemainingArray[2].value = Mathf.InverseLerp(0.25f, 0.5f, t);
+            timeRemainingArray[3].value = Mathf.InverseLerp(0f, 0.25f, t);
         }
 
         private void ResetBackground(Worker w = null)
@@ -95,14 +106,15 @@ namespace Work.GUI
 
         public void Reposition(Vector3 newPosition, float newScale, bool snapToPosition = false)
         {
+            float calculatedScale = newScale / defaultSize;
             if (snapToPosition)
             {
-                rt.sizeDelta = Vector2.one * newScale;
+                rt.localScale = Vector2.one * calculatedScale;
                 rt.position = newPosition;
             }
             else
             {
-                rt.DOSizeDelta(Vector2.one * newScale, transitionTime).SetEase(Ease.InOutSine);
+                rt.DOScale(Vector2.one * calculatedScale, transitionTime).SetEase(Ease.InOutSine);
                 rt.DOMove(newPosition, transitionTime).SetEase(Ease.InOutSine);
             }
         }
@@ -111,7 +123,7 @@ namespace Work.GUI
         {
             cg.alpha = 0f;
             cg.DOFade(1f, transitionTime);
-            rt.sizeDelta = Vector3.zero;
+            rt.localScale = Vector3.zero;
         }
 
         private void OnDestroy()
