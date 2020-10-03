@@ -6,11 +6,6 @@ public class Workforce : MonoBehaviour
 {
     public List<Worker> workers;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-    }
-
     // Update is called once per frame
     protected virtual void Update()
     {
@@ -19,17 +14,22 @@ public class Workforce : MonoBehaviour
         {
             AddWorker();
         }
+        else if (Input.GetKeyDown(KeyCode.Alpha2))
+        {
+            for (int i = 0; i < workers.Count; i++)
+            {
+                workers[i].DoWork();
+            }
+        }
     }
 
     protected virtual void UpdateWorkers()
     {
         for (int i = 0; i < workers.Count; i++)
         {
-            if (workers[i].HasRequestedWord && workers[i].TimeRemainingOnAsk < 0)
+            if (!workers[i].Fired && workers[i].TimeRemainingOnAsk < 0)
             {
-                Debug.Log("Time ran out for a worker!");
-                workers[i].requestedWord = string.Empty;
-                break;
+                workers[i].FireMe();
             }
         }
     }

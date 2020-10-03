@@ -28,7 +28,7 @@ public class WordParser : MonoBehaviour
 
     public static string GetRandomWord(int charLength)
     {
-        return allWords[charLength - shortedWordLength + 1][UnityEngine.Random.Range(0, allWords[charLength - shortedWordLength + 1].Length)];
+        return allWords[charLength - shortedWordLength + 1][UnityEngine.Random.Range(0, allWords[charLength - shortedWordLength + 1].Length)].ToLowerInvariant();
     }
 
     // Update is called once per frame

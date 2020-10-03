@@ -12,7 +12,7 @@ namespace Work.GUI
         protected override Worker AddWorker()
         {
             Worker w = base.AddWorker();
-            GameObject.Instantiate(workerVisualObject, workerParent).GetComponent<TestVisualWorker>().SetWorker(w);
+            GameObject.Instantiate(workerVisualObject, workerParent).GetComponent<VisualWorker>().SetWorker(w);
             return w;
         }
     }
