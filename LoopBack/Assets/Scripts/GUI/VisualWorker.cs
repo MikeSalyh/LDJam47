@@ -34,9 +34,6 @@ namespace Work.GUI
         private void Start()
         {
             defaultColor = background.color;
-            AssociatedWorker.OnRequestNewWord += ResetBackground;
-            AssociatedWorker.OnSelected += TintBackground;
-            AssociatedWorker.OnFired += HandleFired;
         }
 
         // Update is called once per frame
@@ -71,7 +68,7 @@ namespace Work.GUI
             background.color = defaultColor;
         }
 
-        private void TintBackground()
+        private void TintBackground(Worker w)
         {
             background.color = Color.cyan;
         }
@@ -80,6 +77,9 @@ namespace Work.GUI
         {
             AssociatedWorker = w;
             w.visualRepresentation = this.gameObject;
+            AssociatedWorker.OnRequestNewWord += ResetBackground;
+            AssociatedWorker.OnSelected += TintBackground;
+            AssociatedWorker.OnFired += HandleFired;
         }
 
         private string GenerateLabel()
@@ -122,12 +122,18 @@ namespace Work.GUI
 
         private void OnDestroy()
         {
+            RemoveListeners();
+        }
+
+        private void RemoveListeners()
+        {
+            if (AssociatedWorker == null) return;
             AssociatedWorker.OnRequestNewWord -= ResetBackground;
             AssociatedWorker.OnSelected -= TintBackground;
             AssociatedWorker.OnFired -= HandleFired;
         }
 
-        private void HandleFired()
+        private void HandleFired(Worker w)
         {
             background.color = Color.black;
             wordLabel.text = "<color=red>FIRED!</color>";

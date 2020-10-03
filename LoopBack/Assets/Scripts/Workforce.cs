@@ -38,10 +38,6 @@ public class Workforce : MonoBehaviour
                     workers[i].DoWork();
                 }
             }
-            else if (Input.GetKeyDown(KeyCode.Alpha3))
-            {
-                HandleWorkerFired();
-            }
         }
     }
 
@@ -64,20 +60,33 @@ public class Workforce : MonoBehaviour
         return newWorker;
     }
 
-    private void HandleWorkerFired()
+    protected void HandleWorkerFired(Worker w)
     {
-        if(currentWorkState == WorkState.workday)
-            StartCoroutine(HandleWorkerFiredCoroutine());
+        if (currentWorkState == WorkState.workday)
+        {
+            StartCoroutine(HandleWorkerFiredCoroutine(w));
+        }
     }
 
-    protected IEnumerator HandleWorkerFiredCoroutine()
+    protected IEnumerator HandleWorkerFiredCoroutine(Worker w)
     {
         currentWorkState = WorkState.fired;
-        yield return new WaitForSeconds(3f);
         for (int i = 0; i < workers.Count; i++)
             workers[i].ResetCurrentWord();
         ReleaseActiveWorker(activeWorker);
+        yield return DoFiredWorkerAnimation(w);
+        yield return DoResumeWorkdayAnimation(w);
         currentWorkState = WorkState.workday;
+    }
+
+    protected virtual IEnumerator DoFiredWorkerAnimation(Worker w)
+    {
+        yield return new WaitForEndOfFrame();
+    }
+
+    protected virtual IEnumerator DoResumeWorkdayAnimation(Worker w)
+    {
+        yield return new WaitForEndOfFrame();
     }
 
     protected virtual void GenerateNewWord(Worker w)
@@ -120,7 +129,7 @@ public class Workforce : MonoBehaviour
                 {
                     activeWorker = workers[i];
                     if(workers[i].OnSelected != null)
-                        workers[i].OnSelected.Invoke(); //This is a little janky, no?
+                        workers[i].OnSelected.Invoke(workers[i]); //This is a little janky, no?
                     activeWorker.DoWork();
                     break;
                 }

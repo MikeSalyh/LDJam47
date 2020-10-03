@@ -5,7 +5,7 @@ public class Worker
 {
     private static readonly bool addBonusTime = false; //WIP; I don't know which plays better
 
-    public delegate void WorkEvent();
+    public delegate void WorkEvent(Worker w);
     public WorkEvent OnFired;
     public WorkEvent OnSelected;
 
@@ -13,7 +13,7 @@ public class Worker
     public WordEvent OnRequestNewWord;
     public WordEvent OnFinishWord;
 
-    public float newAskDuration = 10f;
+    public float newAskDuration = 3f;
     public float wordCompletePause = 1f;
 
     public GameObject visualRepresentation;
@@ -75,7 +75,7 @@ public class Worker
         Fired = true;
         CurrentWord = string.Empty;
         if(OnFired != null)
-            OnFired.Invoke();
+            OnFired.Invoke(this);
     }
 
     public void DoWork()

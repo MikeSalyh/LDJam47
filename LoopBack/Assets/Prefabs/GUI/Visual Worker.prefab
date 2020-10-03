@@ -108,7 +108,7 @@ GameObject:
   - component: {fileID: 2657064612389089141}
   - component: {fileID: 126056942983604162}
   m_Layer: 5
-  m_Name: Text (TMP) (1)
+  m_Name: Countdown
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -412,7 +412,7 @@ GameObject:
   - component: {fileID: 5511204081034379817}
   - component: {fileID: 2923469499410356138}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: Word
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -1,14 +1,17 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
+using TMPro;
 
 namespace Work.GUI
 {
     public class VisualWorkForce : Workforce
     {
         public GameObject workerVisualObject;
-        public GameObject workerParent;
+        public CanvasGroup workerParent;
         public WorkerGridReference workerGrid;
+        public FiredWorkerGraphic firedWorker;
 
         protected override Worker AddWorker()
         {
@@ -37,6 +40,25 @@ namespace Work.GUI
                 vw.ResetBackground();
             }
             base.ReleaseActiveWorker(w);
+        }
+
+        protected override IEnumerator DoFiredWorkerAnimation(Worker w)
+        {
+            workerParent.DOFade(0.5f, 0.5f);
+            w.visualRepresentation.GetComponent<CanvasGroup>().alpha = 0f;
+            firedWorker.Appear(w.visualRepresentation.GetComponentInChildren<TextMeshProUGUI>().text, w.visualRepresentation.GetComponent<RectTransform>(), 0.5f);
+                //This will need to be adjusted once I have the real graphics.
+            yield return new WaitForSeconds(0.75f);
+            firedWorker.SetToFiredMode();
+            yield return new WaitForSeconds(0.5f);
+        }
+
+        protected override IEnumerator DoResumeWorkdayAnimation(Worker w)
+        {
+            firedWorker.GoAway(w.visualRepresentation.GetComponent<RectTransform>(), 0.5f);
+            workerParent.DOFade(1f, 0.5f);
+            yield return new WaitForSeconds(0.5f);
+            w.visualRepresentation.GetComponent<CanvasGroup>().alpha = 1f;
         }
     }
 }
