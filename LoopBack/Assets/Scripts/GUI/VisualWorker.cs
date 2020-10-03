@@ -21,6 +21,8 @@ namespace Work.GUI
         private void Start()
         {
             defaultColor = background.color;
+            AssociatedWorker.OnRequestNewWord += ResetBackground;
+            AssociatedWorker.OnSelected += TintBackground;
         }
 
         // Update is called once per frame
@@ -37,7 +39,6 @@ namespace Work.GUI
                     }
                     else
                     {
-                        background.color = defaultColor;
                         timeRemaining.value = 1 - Mathf.InverseLerp(AssociatedWorker.AskDuration, 0f, AssociatedWorker.TimeRemainingOnAsk);
                         timeLeftLabel.text = AssociatedWorker.TimeRemainingOnAsk.ToString("0");
                     }
@@ -47,6 +48,16 @@ namespace Work.GUI
                     background.color = Color.red;
                 }
             }
+        }
+
+        private void ResetBackground(Worker w = null)
+        {
+            background.color = defaultColor;
+        }
+
+        private void TintBackground()
+        {
+            background.color = Color.cyan;
         }
 
         public void SetWorker(Worker w)
@@ -68,6 +79,12 @@ namespace Work.GUI
                 output += AssociatedWorker.CurrentWord[i];
             }
             return output;
+        }
+
+        private void OnDisable()
+        {
+            AssociatedWorker.OnRequestNewWord -= ResetBackground;
+            AssociatedWorker.OnSelected -= TintBackground;
         }
     }
 }

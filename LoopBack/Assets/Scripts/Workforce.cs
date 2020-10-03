@@ -83,10 +83,11 @@ public class Workforce : MonoBehaviour
                 if (string.IsNullOrEmpty(reqChar))
                     continue;
 
-                Debug.Log(reqChar);
                 if (Input.GetKeyDown(reqChar))
                 {
                     activeWorker = workers[i];
+                    if(workers[i].OnSelected != null)
+                        workers[i].OnSelected.Invoke(); //This is a little janky, no?
                     activeWorker.DoWork();
                     break;
                 }

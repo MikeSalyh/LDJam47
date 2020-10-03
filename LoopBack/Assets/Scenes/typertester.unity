@@ -269,6 +269,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   workers: []
+  wordLength: 6
   workerVisualObject: {fileID: 8507141393161130162, guid: 524b361bcec4b844e8cba51af5415be7,
     type: 3}
   workerParent: {fileID: 1760685220}

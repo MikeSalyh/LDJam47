@@ -7,6 +7,7 @@ public class Worker
 
     public delegate void WorkEvent();
     public WorkEvent OnFired;
+    public WorkEvent OnSelected;
 
     public delegate void WordEvent(Worker w);
     public WordEvent OnRequestNewWord;
