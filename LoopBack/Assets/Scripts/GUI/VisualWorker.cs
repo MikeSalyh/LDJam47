@@ -30,9 +30,17 @@ namespace Work.GUI
             {
                 if (!AssociatedWorker.Fired)
                 {
-                    timeRemaining.value = 1 - Mathf.InverseLerp(AssociatedWorker.AskDuration, 0f, AssociatedWorker.TimeRemainingOnAsk);
-                    timeLeftLabel.text = AssociatedWorker.TimeRemainingOnAsk.ToString("0");
                     wordLabel.text = GenerateLabel();
+                    if (AssociatedWorker.WordComplete)
+                    {
+                        background.color = Color.green;
+                    }
+                    else
+                    {
+                        background.color = defaultColor;
+                        timeRemaining.value = 1 - Mathf.InverseLerp(AssociatedWorker.AskDuration, 0f, AssociatedWorker.TimeRemainingOnAsk);
+                        timeLeftLabel.text = AssociatedWorker.TimeRemainingOnAsk.ToString("0");
+                    }
                 }
                 else
                 {

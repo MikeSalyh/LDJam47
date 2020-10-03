@@ -27,10 +27,7 @@ public class Workforce : MonoBehaviour
     {
         for (int i = 0; i < workers.Count; i++)
         {
-            if (!workers[i].Fired && workers[i].TimeRemainingOnAsk < 0)
-            {
-                workers[i].FireMe();
-            }
+            workers[i].UpdateWorker();
         }
     }
 

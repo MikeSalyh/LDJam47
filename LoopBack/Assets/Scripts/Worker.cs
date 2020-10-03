@@ -11,12 +11,19 @@ public class Worker
     
     [Range(2,8)]
     public int wordLength = 3;
-    public float lastWordRequestedTime = 0;
     public float newAskDuration = 10f;
-    public float AskDuration { get; private set; }
-    public int WorkDone { get; private set; }
+    public float wordCompletePause = 1f;
 
-    public string RequestedWord { get; private set; }
+    public float LastWordRequestedTime { get; protected set;  }
+    public float LastWordCompleteTime { get; protected set;  }
+    public float AskDuration { get; protected set; }
+    public string RequestedWord { get; protected set; }
+    public int WorkDone { get; protected set; }
+
+    public bool WordComplete {
+        get { return WorkDone >= wordLength; }
+    }
+
     public bool HasRequestedWord
     {
         get { return !string.IsNullOrEmpty(RequestedWord); }
@@ -26,18 +33,21 @@ public class Worker
 
     public float TimeRemainingOnAsk
     {
-        get { return (lastWordRequestedTime + AskDuration) - Time.time; }
+        get { return (LastWordRequestedTime + AskDuration) - Time.time; }
+    }
+
+    public float TimeRemainingOnCompletionDelay
+    {
+        get { return (LastWordCompleteTime + wordCompletePause) - Time.time; }
     }
 
     public Worker()
     {
-        OnFinishWord += RequestNewWord;
     }
 
     public void RequestNewWord()
     {
-        lastWordRequestedTime = Time.time;
-
+        LastWordRequestedTime = Time.time;
         if (addBonusTime)
             AskDuration = Mathf.Max(TimeRemainingOnAsk, 0) + newAskDuration;
         else
@@ -56,16 +66,39 @@ public class Worker
     public void FireMe()
     {
         Fired = true;
-        OnFired.Invoke();
-        //requestedWord = string.Empty;
+        if(OnFired != null)
+            OnFired.Invoke();
     }
 
     public void DoWork()
     {
+        if (WordComplete) return; //If the word's already complete, don't do any more work.
+
         WorkDone++;
-        if (WorkDone >= wordLength)
+        if (WordComplete)
         {
-            OnFinishWord.Invoke();
+            //Word is finished
+            LastWordCompleteTime = Time.time;
+            if(OnFinishWord != null)
+                OnFinishWord.Invoke();
+        }
+    }
+
+    public void UpdateWorker()
+    {
+        if (WorkDone < wordLength)
+        {
+            if (!Fired && TimeRemainingOnAsk < 0)
+            {
+                FireMe();
+            }
+        }
+        else
+        {
+            if (TimeRemainingOnCompletionDelay < 0)
+            {
+                RequestNewWord();
+            }
         }
     }
 }
