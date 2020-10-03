@@ -9,6 +9,11 @@ public class Workforce : MonoBehaviour
     protected Worker activeWorker;
     public int wordLength = 3;
 
+    public int maxBreaks = 3;
+    public int BreaksAvailable { get; private set; }
+    public int maxLives = 3;
+    public int LivesLeft { get; private set; }
+
     public enum WorkState
     {
         workday,
@@ -18,13 +23,30 @@ public class Workforce : MonoBehaviour
     }
     public WorkState currentWorkState = WorkState.workday;
 
+    private void Start()
+    {
+        NewGame();
+    }
+
+    protected void NewGame()
+    {
+        LivesLeft = maxLives;
+        BreaksAvailable = 3;
+        wordLength = 3;
+    }
+
     // Update is called once per frame
     protected virtual void Update()
     {
         if (currentWorkState == WorkState.workday)
         {
             UpdateWorkers(Time.deltaTime);
-            HandleInput();
+            HandleTyping();
+
+            if (Input.GetKeyDown(KeyCode.Space) && BreaksAvailable > 0)
+            {
+                GoOnBreak();
+            }
 
             //Debug:
             if (Input.GetKeyDown(KeyCode.Alpha1))
@@ -79,6 +101,27 @@ public class Workforce : MonoBehaviour
         currentWorkState = WorkState.workday;
     }
 
+    protected void GoOnBreak()
+    {
+        StartCoroutine(GoOnBreakCoroutine());
+    }
+
+    protected virtual IEnumerator GoOnBreakCoroutine()
+    {
+        BreaksAvailable--;
+        currentWorkState = WorkState.onbreak;
+        for (int i = 0; i < workers.Count; i++)
+            workers[i].ResetCurrentWord();
+        ReleaseActiveWorker(activeWorker);
+        yield return DoBreakAnimation();
+        currentWorkState = WorkState.workday;
+    }
+
+    protected virtual IEnumerator DoBreakAnimation()
+    {
+        yield return new WaitForSeconds(1f);
+    }
+
     protected virtual IEnumerator DoFiredWorkerAnimation(Worker w)
     {
         yield return new WaitForEndOfFrame();
@@ -88,6 +131,7 @@ public class Workforce : MonoBehaviour
     {
         yield return new WaitForEndOfFrame();
     }
+
 
     protected virtual void GenerateNewWord(Worker w)
     {
@@ -105,7 +149,7 @@ public class Workforce : MonoBehaviour
         activeWorker = null;
     }
 
-    private void HandleInput()
+    private void HandleTyping()
     {
         string reqChar;
         if (activeWorker != null && !activeWorker.Fired && !activeWorker.WordComplete)

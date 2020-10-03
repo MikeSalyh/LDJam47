@@ -12,6 +12,7 @@ namespace Work.GUI
         public CanvasGroup workerParent;
         public WorkerGridReference workerGrid;
         public FiredWorkerGraphic firedWorker;
+        public BreakPrompt breakPrompt;
 
         protected override Worker AddWorker()
         {
@@ -30,7 +31,6 @@ namespace Work.GUI
                 workers[i].visualRepresentation.GetComponent<VisualWorker>().Reposition(newGridPositions[i], newGridSize);
             }
         }
-
 
         protected override void ReleaseActiveWorker(Worker w)
         {
@@ -60,5 +60,15 @@ namespace Work.GUI
             yield return new WaitForSeconds(0.5f);
             w.visualRepresentation.GetComponent<CanvasGroup>().alpha = 1f;
         }
+
+        protected override IEnumerator DoBreakAnimation()
+        {
+            workerParent.DOFade(0f, 0.25f);
+            float breakLength = 3.5f;
+            breakPrompt.Show(breakLength);
+            yield return new WaitForSeconds(breakLength);
+            workerParent.DOFade(1f, 0.5f);
+        }
+
     }
 }
