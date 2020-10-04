@@ -104,7 +104,7 @@ public class Workforce : MonoBehaviour
         for (int i = 0; i < workers.Count; i++)
         {
             workers[i].readyForNewWord = true;
-            workers[i].timeRemainingOnCompletionDelay += Random.value / 5f; //a lil shake so they don't all resume at once.
+            workers[i].timeRemainingOnCompletionDelay += (i/8f) + (Random.value / 4f); //a lil shake so they don't all resume at once.
         }
         TryingToAddWorker = false;
     }
