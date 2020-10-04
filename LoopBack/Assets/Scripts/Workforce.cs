@@ -11,19 +11,12 @@ public class Workforce : MonoBehaviour
 
     public int maxLives = 3;
     public int LivesLeft { get; private set; }
-    public int CharsTyped { get; private set; }
-    public int WordsTyped { get; private set; }
-
-    //public int maxBreaks = 3;
-    //public int BreaksAvailable { get; private set; }
-    //public float breakAmountPerChar = 1/50;
-    //public float NextBreakPercent { get; private set; }
 
     public enum WorkState
     {
         workday,
-        //onbreak,
         fired,
+        over,
         paused
     }
     public WorkState currentWorkState = WorkState.workday;
@@ -36,10 +29,7 @@ public class Workforce : MonoBehaviour
     protected void NewGame()
     {
         LivesLeft = maxLives;
-        //BreaksAvailable = 3;
         wordLength = 3;
-        CharsTyped = 0;
-        WordsTyped = 0;
     }
 
     // Update is called once per frame
@@ -49,11 +39,6 @@ public class Workforce : MonoBehaviour
         {
             UpdateWorkers(Time.deltaTime);
             HandleTyping();
-
-            //if (Input.GetKeyDown(KeyCode.Space) && BreaksAvailable > 0)
-            //{
-            //    GoOnBreak();
-            //}
 
             //Debug:
             if (Input.GetKeyDown(KeyCode.Alpha1))
@@ -82,8 +67,7 @@ public class Workforce : MonoBehaviour
     {
         Worker newWorker = new Worker();
         newWorker.OnRequestNewWord += GenerateNewWord;
-        newWorker.OnFinishWord += ReleaseActiveWorker;
-        newWorker.OnFinishWord += (Worker w)=> { WordsTyped++; };
+        newWorker.OnFinishWord += HandleWordFinished;
         newWorker.OnFired += HandleWorkerFired;
         GenerateNewWord(newWorker);
         workers.Add(newWorker);
@@ -106,29 +90,21 @@ public class Workforce : MonoBehaviour
         ReleaseActiveWorker(activeWorker);
         yield return DoFiredWorkerAnimation(w);
         yield return DoResumeWorkdayAnimation(w);
-        currentWorkState = WorkState.workday;
+
+        if (LivesLeft > 0)
+        {
+            currentWorkState = WorkState.workday;
+        }
+        else
+        {
+            HandleGameOver();
+        }
     }
 
-    //protected void GoOnBreak()
-    //{
-    //    StartCoroutine(GoOnBreakCoroutine());
-    //}
-
-    //protected virtual IEnumerator GoOnBreakCoroutine()
-    //{
-    //    BreaksAvailable--;
-    //    currentWorkState = WorkState.onbreak;
-    //    for (int i = 0; i < workers.Count; i++)
-    //        workers[i].ResetCurrentWord();
-    //    ReleaseActiveWorker(activeWorker);
-    //    yield return DoBreakAnimation();
-    //    currentWorkState = WorkState.workday;
-    //}
-
-    //protected virtual IEnumerator DoBreakAnimation()
-    //{
-    //    yield return new WaitForSeconds(1f);
-    //}
+    protected void LoseLife()
+    {
+        LivesLeft--;
+    }
 
     protected virtual IEnumerator DoFiredWorkerAnimation(Worker w)
     {
@@ -140,6 +116,12 @@ public class Workforce : MonoBehaviour
         yield return new WaitForEndOfFrame();
     }
 
+
+    protected void HandleGameOver()
+    {
+        currentWorkState = WorkState.over;
+        MetagameManager.instance.GoToFinale();
+    }
 
     protected virtual void GenerateNewWord(Worker w)
     {
@@ -166,7 +148,6 @@ public class Workforce : MonoBehaviour
             if (!string.IsNullOrEmpty(reqChar) && Input.GetKeyDown(reqChar))
             {
                 activeWorker.DoWork();
-                OnCharacterTyped();
             }
         } else {
             for (int i = 0; i < workers.Count; i++)
@@ -184,21 +165,15 @@ public class Workforce : MonoBehaviour
                     if(workers[i].OnSelected != null)
                         workers[i].OnSelected.Invoke(workers[i]); //This is a little janky, no?
                     activeWorker.DoWork();
-                    OnCharacterTyped();
                     break;
                 }
             }
         }       
     }
 
-    private void OnCharacterTyped()
+    private void HandleWordFinished(Worker w)
     {
-        CharsTyped++;
-        //NextBreakPercent += breakAmountPerChar;
-        //if (NextBreakPercent > 1f)
-        //{
-        //    BreaksAvailable++;
-        //    NextBreakPercent %= 1;
-        //}
+        ReleaseActiveWorker(w);
+        MetagameManager.instance.score++;
     }
 }
