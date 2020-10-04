@@ -16,6 +16,7 @@ public class Worker
     public float wordCompletePause = 1.5f;
 
     public GameObject visualRepresentation;
+    public bool readyForNewWord = true;
 
     public string CurrentWord { get; protected set; }
     public int WorkDone { get; protected set; }
@@ -113,7 +114,7 @@ public class Worker
         }
         else
         {
-            if (!Fired && TimeRemainingOnCompletionDelay < 0)
+            if (!Fired && TimeRemainingOnCompletionDelay < 0 && readyForNewWord)
             {
                 if(OnRequestNewWord != null)
                     OnRequestNewWord.Invoke(this);

@@ -48,16 +48,7 @@ namespace Work.GUI
                 //This will need to be adjusted once I have the real graphics.
             yield return new WaitForSeconds(0.75f);
             firedWorker.SetToFiredMode();
-            LoseLife();
             yield return new WaitForSeconds(0.5f);
-        }
-
-        protected override IEnumerator DoResumeWorkdayAnimation(Worker w)
-        {
-            firedWorker.GoAway(w.visualRepresentation.GetComponent<RectTransform>(), 0.5f);
-            workerParent.DOFade(1f, 0.5f);
-            yield return new WaitForSeconds(0.5f);
-            w.visualRepresentation.GetComponent<CanvasGroup>().alpha = 1f;
         }
     }
 }

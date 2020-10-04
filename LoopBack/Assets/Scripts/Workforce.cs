@@ -9,8 +9,6 @@ public class Workforce : MonoBehaviour
 
     public List<Worker> workers;
     protected Worker activeWorker;
-    public int maxLives = 1;
-    public int LivesLeft { get; private set; }
 
     public enum WorkState
     {
@@ -28,7 +26,6 @@ public class Workforce : MonoBehaviour
 
     protected void NewGame()
     {
-        LivesLeft = maxLives;
     }
 
     // Update is called once per frame
@@ -88,29 +85,10 @@ public class Workforce : MonoBehaviour
             workers[i].ResetCurrentWord();
         ReleaseActiveWorker(activeWorker);
         yield return DoFiredWorkerAnimation(w);
-        yield return DoResumeWorkdayAnimation(w);
-
-        if (LivesLeft > 0)
-        {
-            currentWorkState = WorkState.workday;
-        }
-        else
-        {
-            HandleGameOver();
-        }
-    }
-
-    protected void LoseLife()
-    {
-        LivesLeft--;
-    }
+        HandleGameOver();
+}
 
     protected virtual IEnumerator DoFiredWorkerAnimation(Worker w)
-    {
-        yield return new WaitForEndOfFrame();
-    }
-
-    protected virtual IEnumerator DoResumeWorkdayAnimation(Worker w)
     {
         yield return new WaitForEndOfFrame();
     }
