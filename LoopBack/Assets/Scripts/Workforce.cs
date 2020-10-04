@@ -9,7 +9,7 @@ public class Workforce : MonoBehaviour
 
     public List<Worker> workers;
     protected Worker activeWorker;
-    public int maxLives = 3;
+    public int maxLives = 1;
     public int LivesLeft { get; private set; }
 
     public enum WorkState

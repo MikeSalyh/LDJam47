@@ -13,7 +13,7 @@ public class Worker
 
     public bool selected;
 
-    public float wordCompletePause = 1f;
+    public float wordCompletePause = 1.5f;
 
     public GameObject visualRepresentation;
 

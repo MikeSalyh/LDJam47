@@ -15,7 +15,7 @@ namespace Work.GUI
         public override Worker AddWorker()
         {
             Worker w = base.AddWorker();
-            GameObject.Instantiate(workerVisualObject, workerParent.transform).GetComponent<VisualWorker>().SetWorker(w);
+            GameObject.Instantiate(workerVisualObject, workerParent.transform).GetComponent<VisualWorker>().SetWorker(w, workers.Count-1);
             UpdateGrid();
             return w;
         }

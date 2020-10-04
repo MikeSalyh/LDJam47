@@ -18,6 +18,7 @@ namespace Work.GUI
         public float transitionTime = 0.5f;
         private float defaultSize;
         public WordPromptGUI wordPrompt;
+        public WorkerAnimation anim;
 
         private static readonly string workStartString = "<color=yellow>";
         private static readonly string workEndString = "</color>";
@@ -68,18 +69,20 @@ namespace Work.GUI
             wordPrompt.gameObject.SetActive(true);
         }
 
-        public void SetWorker(Worker w)
+        public void SetWorker(Worker w, int characterID)
         {
             AssociatedWorker = w;
             w.visualRepresentation = this.gameObject;
             AssociatedWorker.OnFinishWord += HandleWordFinished;
             AssociatedWorker.OnRequestNewWord += HandleNewWord;
             AssociatedWorker.OnFired += HandleFired;
+            anim.SetCharacter(characterID);
         }
 
         private void HandleWordFinished(Worker w)
         {
             wordPrompt.gameObject.SetActive(false);
+            anim.Play();
         }
 
         private string GenerateLabel()
