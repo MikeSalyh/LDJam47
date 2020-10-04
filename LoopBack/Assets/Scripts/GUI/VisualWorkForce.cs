@@ -10,7 +10,7 @@ namespace Work.GUI
         public GameObject workerVisualObject;
         public CanvasGroup workerParent;
         public WorkerGridReference workerGrid;
-        public FiredWorkerGraphic firedWorker;
+        public PopupWorkerGraphic popup;
 
         protected override Worker AddWorker()
         {
@@ -44,7 +44,15 @@ namespace Work.GUI
         {
             workerParent.DOFade(0f, 0.5f);
             w.visualRepresentation.GetComponent<CanvasGroup>().alpha = 0f;
-            yield return firedWorker.Appear(w.visualRepresentation.GetComponentInChildren<VisualWorker>(), w.visualRepresentation.GetComponent<RectTransform>(), 0.5f);
+            yield return popup.DoGameOver(w.visualRepresentation.GetComponentInChildren<VisualWorker>(), w.visualRepresentation.GetComponent<RectTransform>(), 0.5f);
+            yield return new WaitForSeconds(1.5f);
+        }
+
+        protected override IEnumerator DoWinAnimation(Worker w)
+        {
+            workerParent.DOFade(0f, 0.5f);
+            w.visualRepresentation.GetComponent<CanvasGroup>().alpha = 0f;
+            yield return popup.DoGameWin(w.visualRepresentation.GetComponentInChildren<VisualWorker>(), w.visualRepresentation.GetComponent<RectTransform>(), 0.5f);
             yield return new WaitForSeconds(1.5f);
         }
     }

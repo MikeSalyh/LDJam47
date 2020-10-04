@@ -23,7 +23,7 @@ public class Worker
     public float latestAskDuration { get; protected set; }
 
     public bool WordComplete {
-        get { return WorkDone >= CurrentWord.Length - 1; }
+        get { return WorkDone >= CurrentWord.Length; }
     }
 
     public bool HasRequestedWord
@@ -54,7 +54,7 @@ public class Worker
     {
         latestAskDuration = DifficultyManager.GetAskDuration();
         TimeRemainingOnAsk = latestAskDuration;
-        CurrentWord = newWord;
+        CurrentWord = newWord.Trim();
         WorkDone = 0;
     }
 

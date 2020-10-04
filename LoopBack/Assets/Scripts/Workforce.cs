@@ -17,6 +17,7 @@ public class Workforce : MonoBehaviour
         workday,
         fired,
         over,
+        win,
         paused
     }
     public WorkState currentWorkState = WorkState.workday;
@@ -100,13 +101,23 @@ public class Workforce : MonoBehaviour
         yield return new WaitUntil(
             () => CheckAllWorkersDone());
 
-        yield return new WaitForSeconds(1.25f);
-        for (int i = 0; i < workers.Count; i++)
+        //Check if the player has won the game
+        if (workers.Count >= MAX_WORKERS)
         {
-            workers[i].readyForNewWord = true;
-            workers[i].timeRemainingOnCompletionDelay += (i/8f) + (Random.value / 4f); //a lil shake so they don't all resume at once.
+            //the player has won the game!
+            HandleWinGame(workers[workers.Count-1]);
         }
-        TryingToAddWorker = false;
+        else
+        {
+
+            yield return new WaitForSeconds(1.25f);
+            for (int i = 0; i < workers.Count; i++)
+            {
+                workers[i].readyForNewWord = true;
+                workers[i].timeRemainingOnCompletionDelay += (i / 8f) + (Random.value / 4f); //a lil shake so they don't all resume at once.
+            }
+            TryingToAddWorker = false;
+        }
     }
 
     protected virtual Worker AddWorker()
@@ -115,8 +126,15 @@ public class Workforce : MonoBehaviour
         newWorker.OnRequestNewWord += GenerateNewWord;
         newWorker.OnFinishWord += HandleWordFinished;
         newWorker.OnFired += HandleWorkerFired;
-        GenerateNewWord(newWorker);
         workers.Add(newWorker);
+
+        if (workers.Count == 1)
+            newWorker.SetWord("ant");
+        else if (workers.Count == MAX_WORKERS)
+            newWorker.SetWord("queen");
+        else
+            GenerateNewWord(newWorker);
+
         newWorker.selected = true;
         return newWorker;
     }
@@ -137,7 +155,7 @@ public class Workforce : MonoBehaviour
         ReleaseActiveWorker(activeWorker);
         yield return DoFiredWorkerAnimation(w);
         HandleGameOver();
-}
+    } 
 
     protected virtual IEnumerator DoFiredWorkerAnimation(Worker w)
     {
@@ -206,5 +224,28 @@ public class Workforce : MonoBehaviour
     {
         ReleaseActiveWorker(w);
         MetagameManager.instance.score++;
+    }
+
+    protected void HandleWinGame(Worker w)
+    {
+        if (currentWorkState == WorkState.workday)
+        {
+            StartCoroutine(HandleWinCoroutine(w));
+        }
+    }
+
+    protected IEnumerator HandleWinCoroutine(Worker w)
+    {
+        currentWorkState = WorkState.win;
+        for (int i = 0; i < workers.Count; i++)
+            workers[i].ResetCurrentWord();
+        ReleaseActiveWorker(activeWorker);
+        yield return DoWinAnimation(w);
+        HandleGameOver();
+    }
+
+    protected virtual IEnumerator DoWinAnimation(Worker w)
+    {
+        yield return new WaitForEndOfFrame();
     }
 }

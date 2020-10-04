@@ -7,16 +7,18 @@ using DG.Tweening;
 
 namespace Work.GUI
 {
-    public class FiredWorkerGraphic : MonoBehaviour
+    public class PopupWorkerGraphic : MonoBehaviour
     {
-        public CanvasGroup firedLabel;
-        public CanvasGroup firedFade;
+        public CanvasGroup firedGraphics;
+        public CanvasGroup victoryGraphics;
+
         private RectTransform rt;
         private CanvasGroup cg;
         public float transitionTime = 0.5f;
         private float defaultScale;
         private Vector2 defaultPosition;
         public WorkerAnimation anim;
+        public Image background;
 
         private void Awake()
         {
@@ -28,11 +30,11 @@ namespace Work.GUI
 
         private void OnEnable()
         {
-            firedLabel.alpha = 0f;
-            firedFade.alpha = 0f;
+            firedGraphics.alpha = 0f;
+            victoryGraphics.alpha = 0f;
         }
 
-        public IEnumerator Appear(VisualWorker w, RectTransform t, float time = 1f)
+        public IEnumerator DoGameOver(VisualWorker w, RectTransform t, float time = 1f)
         {
             gameObject.SetActive(true);
             transform.position = t.position;
@@ -41,11 +43,26 @@ namespace Work.GUI
             transform.DOScale(defaultScale, time);
             anim.SetCharacter(w.anim.CharacterIndex);
             yield return new WaitForSeconds(time + 0.5f);
-            firedFade.alpha = 1f;
-            firedLabel.alpha = 1f;
+            firedGraphics.alpha = 1f;
             transform.DOScale(transform.localScale * 0.8f, 0.1f).SetEase(Ease.OutQuad);
             yield return new WaitForSeconds(0.1f);
             transform.DOScale(defaultScale, 0.25f).SetEase(Ease.OutQuad);
+        }
+
+        public IEnumerator DoGameWin(VisualWorker w, RectTransform t, float time = 1f)
+        {
+            gameObject.SetActive(true);
+            transform.position = t.position;
+            transform.localScale = t.localScale;
+            transform.DOMove(defaultPosition, time);
+            transform.DOScale(defaultScale, time);
+            anim.SetCharacter(w.anim.CharacterIndex);
+            yield return new WaitForSeconds(time + 0.5f);
+            anim.Play();
+            yield return new WaitForSeconds(1.35f);
+            victoryGraphics.DOFade(1f, 1f);
+            background.DOColor(Color.green, 1f);
+            yield return new WaitForSeconds(1f);
         }
     }
 }
