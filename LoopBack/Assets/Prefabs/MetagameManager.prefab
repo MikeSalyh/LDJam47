@@ -46,6 +46,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dimPlane: {fileID: 7299184816041367143}
   score: 0
+  level: 0
+  numWorkers: 0
 --- !u!1 &7299184816041367137
 GameObject:
   m_ObjectHideFlags: 0
@@ -105,7 +107,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.07920967, g: 0.092160694, b: 0.18867922, a: 1}
+  m_Color: {r: 0.21568628, g: 0.21568628, b: 0.21568628, a: 1}
   m_RaycastTarget: 1
   m_Maskable: 1
   m_OnCullStateChanged:
