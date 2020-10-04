@@ -48,6 +48,7 @@ public class Workforce : MonoBehaviour
             {
                 for (int i = 0; i < workers.Count; i++)
                 {
+                    HandleWorkDone();
                     workers[i].DoWork();
                 }
             }
@@ -196,6 +197,7 @@ public class Workforce : MonoBehaviour
             reqChar = activeWorker.NextLetter.ToString().ToLowerInvariant();
             if (!string.IsNullOrEmpty(reqChar) && Input.GetKeyDown(reqChar))
             {
+                HandleWorkDone();
                 activeWorker.DoWork();
             }
         } else {
@@ -215,13 +217,18 @@ public class Workforce : MonoBehaviour
                     if(workers[i].OnSelected != null)
                         workers[i].OnSelected.Invoke(workers[i]); //This is a little janky, no?
                     activeWorker.DoWork();
+                    HandleWorkDone();
                     break;
                 }
             }
         }       
     }
 
-    private void HandleWordFinished(Worker w)
+    protected virtual void HandleWorkDone()
+    {
+    }
+
+    protected virtual void HandleWordFinished(Worker w)
     {
         ReleaseActiveWorker(w);
         MetagameManager.instance.score++;
