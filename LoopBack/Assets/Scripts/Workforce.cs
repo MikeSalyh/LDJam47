@@ -5,7 +5,7 @@ using System.Linq;
 
 public class Workforce : MonoBehaviour
 {
-    public const int MAX_WORKERS = 9; 
+    public const int MAX_WORKERS = 12; 
 
     public List<Worker> workers;
     protected Worker activeWorker;
