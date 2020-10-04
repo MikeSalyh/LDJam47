@@ -21,6 +21,7 @@ namespace Work.GUI
 
         private static readonly string workStartString = "<color=yellow>";
         private static readonly string workEndString = "</color>";
+        private bool wasSelected;
 
         private void Awake()
         {
@@ -44,6 +45,15 @@ namespace Work.GUI
                     wordPrompt.wordLabel.text = GenerateLabel();
                     HandleTimeRemaining();
                 }
+
+                if (AssociatedWorker.selected != wasSelected)
+                {
+                    Color selectedColor = Color.green; //Maybe?
+
+                    wasSelected = AssociatedWorker.selected;
+                    background.DOColor(AssociatedWorker.selected ? selectedColor : defaultColor, 0.25f);
+                    wordPrompt.background.DOColor(AssociatedWorker.selected ? selectedColor : defaultColor, 0.25f);
+                }
             }
         }
 
@@ -55,14 +65,7 @@ namespace Work.GUI
 
         public void HandleNewWord(Worker w = null)
         {
-            background.color = defaultColor;
             wordPrompt.gameObject.SetActive(true);
-        }
-
-        private void TintBackground(Worker w)
-        {
-            background.color = Color.magenta;
-            wordPrompt.background.color = Color.magenta;
         }
 
         public void SetWorker(Worker w)
@@ -71,13 +74,11 @@ namespace Work.GUI
             w.visualRepresentation = this.gameObject;
             AssociatedWorker.OnFinishWord += HandleWordFinished;
             AssociatedWorker.OnRequestNewWord += HandleNewWord;
-            AssociatedWorker.OnSelected += TintBackground;
             AssociatedWorker.OnFired += HandleFired;
         }
 
         private void HandleWordFinished(Worker w)
         {
-            background.color = Color.green;
             wordPrompt.gameObject.SetActive(false);
         }
 
@@ -128,13 +129,11 @@ namespace Work.GUI
         {
             if (AssociatedWorker == null) return;
             AssociatedWorker.OnRequestNewWord -= HandleNewWord;
-            AssociatedWorker.OnSelected -= TintBackground;
             AssociatedWorker.OnFired -= HandleFired;
         }
 
         private void HandleFired(Worker w)
         {
-            background.color = Color.black;
             wordPrompt.wordLabel.text = "<color=red>FIRED!</color>";
         }
     }
