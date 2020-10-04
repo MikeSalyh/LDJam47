@@ -201,6 +201,18 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 5620913178316130042}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &552247958 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8169910788231305482, guid: aca49656d325b1147a382adbf267c1f9,
+    type: 3}
+  m_PrefabInstance: {fileID: 5620913178316130042}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 01d0df67034e29f4b8eeff158ae341d7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &700611135
 GameObject:
   m_ObjectHideFlags: 0
@@ -318,7 +330,7 @@ MonoBehaviour:
     type: 3}
   workerParent: {fileID: 1965377629}
   workerGrid: {fileID: 1003812055}
-  popup: {fileID: 0}
+  popup: {fileID: 552247958}
 --- !u!114 &930051534
 MonoBehaviour:
   m_ObjectHideFlags: 0
