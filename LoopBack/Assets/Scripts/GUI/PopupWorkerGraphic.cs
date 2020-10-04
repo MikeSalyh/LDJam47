@@ -19,12 +19,15 @@ namespace Work.GUI
         private Vector2 defaultPosition;
         public WorkerAnimation anim;
         public Image background;
+        private AudioSource src;
+        public AudioClip firedSound;
 
         private void Awake()
         {
             rt = GetComponent<RectTransform>();
             defaultScale = transform.localScale.x;
             defaultPosition = transform.position;
+            src = GetComponent<AudioSource>();
             cg = GetComponent<CanvasGroup>();
         }
 
@@ -43,6 +46,7 @@ namespace Work.GUI
             transform.DOScale(defaultScale, time);
             anim.SetCharacter(w.anim.CharacterIndex);
             yield return new WaitForSeconds(time + 0.5f);
+            src.PlayOneShot(firedSound, 0.35f);
             firedGraphics.alpha = 1f;
             transform.DOScale(transform.localScale * 0.8f, 0.1f).SetEase(Ease.OutQuad);
             yield return new WaitForSeconds(0.1f);
