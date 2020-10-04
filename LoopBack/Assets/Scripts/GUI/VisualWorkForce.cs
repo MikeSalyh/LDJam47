@@ -1,8 +1,7 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using DG.Tweening;
+﻿using DG.Tweening;
+using System.Collections;
 using TMPro;
+using UnityEngine;
 
 namespace Work.GUI
 {
@@ -13,7 +12,7 @@ namespace Work.GUI
         public WorkerGridReference workerGrid;
         public FiredWorkerGraphic firedWorker;
 
-        protected override Worker AddWorker()
+        public override Worker AddWorker()
         {
             Worker w = base.AddWorker();
             GameObject.Instantiate(workerVisualObject, workerParent.transform).GetComponent<VisualWorker>().SetWorker(w);

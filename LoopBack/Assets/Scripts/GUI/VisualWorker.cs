@@ -59,7 +59,7 @@ namespace Work.GUI
 
         private void HandleTimeRemaining()
         {
-            float t = 1 - Mathf.InverseLerp(AssociatedWorker.newAskDuration, 0f, AssociatedWorker.TimeRemainingOnAsk);
+            float t = 1 - Mathf.InverseLerp(AssociatedWorker.latestAskDuration, 0f, AssociatedWorker.TimeRemainingOnAsk);
             timeRemaining.value = t;
         }
 

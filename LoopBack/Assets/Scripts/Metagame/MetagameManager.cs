@@ -10,6 +10,7 @@ public class MetagameManager : MonoBehaviour
     public static MetagameManager instance;
     public CanvasGroup dimPlane;
     public int score = 0;
+    public int level = 0;
 
     public enum GameState
     {
@@ -17,6 +18,7 @@ public class MetagameManager : MonoBehaviour
         Menu,
         Gameplay,
         Finale,
+        Success,
         Loading
     }
 
@@ -70,6 +72,22 @@ public class MetagameManager : MonoBehaviour
         dimPlane.DOFade(0f, 0.5f);
     }
 
+    public void GoToSuccess()
+    {
+        if (currentState != GameState.Loading)
+            StartCoroutine(GoToSuccessCoroutine());
+    }
+
+    private IEnumerator GoToSuccessCoroutine()
+    {
+        SwitchState(GameState.Loading);
+        dimPlane.DOFade(1f, 0.5f);
+        yield return new WaitForSeconds(0.5f);
+        SceneManager.LoadScene("Success");
+        SwitchState(GameState.Success);
+        dimPlane.DOFade(0f, 0.5f);
+    }
+
     public void GoToFinale()
     {
         if (currentState != GameState.Loading)
@@ -96,9 +114,12 @@ public class MetagameManager : MonoBehaviour
         switch (value)
         {
             case GameState.Menu:
+                score = 0;
+                level = 0;
                 break;
             case GameState.Gameplay:
-                score = 0;
+                break;
+            case GameState.Success:
                 break;
             case GameState.Finale:
                 break;

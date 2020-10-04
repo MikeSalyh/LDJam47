@@ -5,10 +5,10 @@ using System.Linq;
 
 public class Workforce : MonoBehaviour
 {
+    public const int MAX_WORKERS = 9; 
+
     public List<Worker> workers;
     protected Worker activeWorker;
-    public int wordLength = 3;
-
     public int maxLives = 3;
     public int LivesLeft { get; private set; }
 
@@ -29,7 +29,6 @@ public class Workforce : MonoBehaviour
     protected void NewGame()
     {
         LivesLeft = maxLives;
-        wordLength = 3;
     }
 
     // Update is called once per frame
@@ -63,7 +62,7 @@ public class Workforce : MonoBehaviour
         }
     }
 
-    protected virtual Worker AddWorker()
+    public virtual Worker AddWorker()
     {
         Worker newWorker = new Worker();
         newWorker.OnRequestNewWord += GenerateNewWord;
@@ -131,7 +130,7 @@ public class Workforce : MonoBehaviour
             if (!workers[i].Fired && !string.IsNullOrEmpty(workers[i].CurrentWord))
                 bannedCharacters.Add(workers[i].CurrentWord[0]);
         }
-        w.SetWord(WordParser.GetRandomWord(wordLength, bannedCharacters.ToArray()));
+        w.SetWord(WordParser.GetRandomWord(DifficultyManager.GetWordLength(), bannedCharacters.ToArray()));
     }
 
     protected virtual void ReleaseActiveWorker(Worker w)

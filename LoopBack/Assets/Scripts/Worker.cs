@@ -11,13 +11,13 @@ public class Worker
     public WordEvent OnRequestNewWord;
     public WordEvent OnFinishWord;
 
-    public float newAskDuration = 3f;
     public float wordCompletePause = 1f;
 
     public GameObject visualRepresentation;
 
     public string CurrentWord { get; protected set; }
     public int WorkDone { get; protected set; }
+    public float latestAskDuration { get; protected set; }
 
     public bool WordComplete {
         get { return WorkDone >= CurrentWord.Length - 1; }
@@ -53,7 +53,8 @@ public class Worker
 
     public void SetWord(string newWord)
     {
-        TimeRemainingOnAsk = newAskDuration;
+        latestAskDuration = DifficultyManager.GetAskDuration();
+        TimeRemainingOnAsk = latestAskDuration;
         CurrentWord = newWord;
         WorkDone = 0;
     }
@@ -63,7 +64,8 @@ public class Worker
         if (!WordComplete)
         {
             WorkDone = 0;
-            TimeRemainingOnAsk = newAskDuration;
+            latestAskDuration = DifficultyManager.GetAskDuration();
+            TimeRemainingOnAsk = latestAskDuration;
         }
     }
 
@@ -83,7 +85,6 @@ public class Worker
         if (WordComplete)
         {
             //Word is finished
-            Debug.Log("The word " + CurrentWord + " was completed.");
             TimeRemainingOnCompletionDelay = wordCompletePause;
             if(OnFinishWord != null)
                 OnFinishWord.Invoke(this);

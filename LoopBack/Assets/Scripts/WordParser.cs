@@ -37,7 +37,7 @@ public class WordParser : MonoBehaviour
         {
             if (suggestedWord[0] == bannedCharacters[i])
             {
-                Debug.Log("regenerating word [" + suggestedWord + "] because the letter " + bannedCharacters[i] + " is already in use.");
+                //Debug.Log("regenerating word [" + suggestedWord + "] because the letter " + bannedCharacters[i] + " is already in use.");
                 reroll = true;
             }
         }
