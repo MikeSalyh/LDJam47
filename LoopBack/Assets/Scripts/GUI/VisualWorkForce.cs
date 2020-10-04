@@ -61,14 +61,14 @@ namespace Work.GUI
             w.visualRepresentation.GetComponent<CanvasGroup>().alpha = 1f;
         }
 
-        protected override IEnumerator DoBreakAnimation()
-        {
-            workerParent.DOFade(0f, 0.25f);
-            float breakLength = 3.5f;
-            breakPrompt.Show(breakLength);
-            yield return new WaitForSeconds(breakLength);
-            workerParent.DOFade(1f, 0.5f);
-        }
+        //protected override IEnumerator DoBreakAnimation()
+        //{
+        //    workerParent.DOFade(0f, 0.25f);
+        //    float breakLength = 3.5f;
+        //    breakPrompt.Show(breakLength);
+        //    yield return new WaitForSeconds(breakLength);
+        //    workerParent.DOFade(1f, 0.5f);
+        //}
 
     }
 }

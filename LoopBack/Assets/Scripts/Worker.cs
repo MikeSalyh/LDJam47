@@ -3,8 +3,6 @@
 [System.Serializable]
 public class Worker
 {
-    private static readonly bool addBonusTime = false; //WIP; I don't know which plays better
-
     public delegate void WorkEvent(Worker w);
     public WorkEvent OnFired;
     public WorkEvent OnSelected;
