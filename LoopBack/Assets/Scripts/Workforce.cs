@@ -40,18 +40,18 @@ public class Workforce : MonoBehaviour
             HandleTyping();
 
             //Debug:
-            if (Input.GetKeyDown(KeyCode.Alpha1))
-            {
-                TryToAddWorker();
-            }
-            else if (Input.GetKeyDown(KeyCode.Alpha2))
-            {
-                for (int i = 0; i < workers.Count; i++)
-                {
-                    HandleWorkDone();
-                    workers[i].DoWork();
-                }
-            }
+            //if (Input.GetKeyDown(KeyCode.Alpha1))
+            //{
+            //    TryToAddWorker();
+            //}
+            //else if (Input.GetKeyDown(KeyCode.Alpha2))
+            //{
+            //    for (int i = 0; i < workers.Count; i++)
+            //    {
+            //        HandleWorkDone();
+            //        workers[i].DoWork();
+            //    }
+            //}
         }
     }
 
