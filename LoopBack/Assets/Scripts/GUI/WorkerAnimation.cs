@@ -37,6 +37,26 @@ public class WorkerAnimation : MonoBehaviour
         StartCoroutine(PlayRoutine());
     }
 
+    public void PlayLoop()
+    {
+        StopAllCoroutines();
+        StartCoroutine(PlayRoutineLoop());
+    }
+
+    private IEnumerator PlayRoutineLoop()
+    {
+        float timePerFrame = animDuration / allAnims[CharacterIndex].sprites.Length;
+        int i = 0;
+        while (true)
+        {
+            img.sprite = allAnims[CharacterIndex].sprites[i];
+            i++;
+            yield return new WaitForSeconds(timePerFrame);
+            if (i >= allAnims[CharacterIndex].sprites.Length)
+                i = 0;
+        }
+    }
+
     private IEnumerator PlayRoutine()
     {
         float timePerFrame = animDuration / allAnims[CharacterIndex].sprites.Length;

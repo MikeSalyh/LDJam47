@@ -137,7 +137,7 @@ public class Workforce : MonoBehaviour
             GenerateNewWord(newWorker);
 
         newWorker.selected = true;
-        MetagameManager.instance.numWorkers = workers.Count;
+        MetagameManager.instance.NumWorkers = workers.Count;
         return newWorker;
     }
 

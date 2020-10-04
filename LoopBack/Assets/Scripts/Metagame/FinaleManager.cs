@@ -12,13 +12,13 @@ public class FinaleManager : MonoBehaviour
 
     private void Start()
     {
-        bool won = MetagameManager.instance.numWorkers >= Workforce.MAX_WORKERS;
+        bool won = MetagameManager.instance.NumWorkers >= Workforce.MAX_WORKERS;
         winGraphic.SetActive(won);
         loseGraphic.SetActive(!won);
 
         for (int i = 0; i < finaleStrings.Length; i++)
         {
-            finaleStrings[i].text = string.Format(finaleStrings[i].text, MetagameManager.instance.score.ToString(), MetagameManager.instance.numWorkers.ToString());
+            finaleStrings[i].text = string.Format(finaleStrings[i].text, MetagameManager.instance.score.ToString(), MetagameManager.instance.NumWorkers.ToString());
         }
     }
 

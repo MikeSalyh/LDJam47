@@ -11,7 +11,18 @@ public class MetagameManager : MonoBehaviour
     public CanvasGroup dimPlane;
     public int score = 0;
     public int level = 0;
-    public int numWorkers = 0;
+
+    private int _numWorkers;
+    public int NumWorkers
+    {
+        get { return _numWorkers; }
+        set {
+            _numWorkers = value;
+            if (value > MaxWorkersUnlocked)
+                MaxWorkersUnlocked = value;
+        }
+    }
+    public int MaxWorkersUnlocked = 1; //no saving.
 
     public enum GameState
     {
@@ -117,7 +128,7 @@ public class MetagameManager : MonoBehaviour
             case GameState.Menu:
                 score = 0;
                 level = 0;
-                numWorkers = 0;
+                NumWorkers = 0;
                 break;
             case GameState.Gameplay:
                 break;
