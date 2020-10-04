@@ -447,7 +447,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "You typed <color=green>{0} words</color> and \nfound <color=green><u>{1}
+  m_text: "You typed <color=green>{0} words</color> and \nhired <color=green><u>{1}
     Ants</u></color>."
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -1764,7 +1764,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Can you find all 12?
+  m_text: Can you hire all 12?
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2100000, guid: 418f4eb20b99fd7498322622f2e6b658, type: 2}
@@ -1999,7 +1999,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "You typed <color=green>{0} words</color> and \nfound <color=green><u>all
+  m_text: "You typed <color=green>{0} words</color> and \nhired <color=green><u>all
     {1} Ants</u></color>."
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}

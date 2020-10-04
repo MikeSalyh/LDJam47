@@ -59,9 +59,6 @@ namespace Work.GUI
             anim.SetCharacter(w.anim.CharacterIndex);
             yield return new WaitForSeconds(time + 0.5f);
             anim.Play();
-            yield return new WaitForSeconds(1.35f);
-            victoryGraphics.DOFade(1f, 1f);
-            background.DOColor(Color.green, 1f);
             yield return new WaitForSeconds(1f);
         }
     }
