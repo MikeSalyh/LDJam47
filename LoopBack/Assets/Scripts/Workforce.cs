@@ -10,7 +10,7 @@ public class Workforce : MonoBehaviour
     public List<Worker> workers;
     protected Worker activeWorker;
 
-    protected bool tryingToAddWorker = false;
+    public bool TryingToAddWorker { get; protected set; }
 
     public enum WorkState
     {
@@ -63,7 +63,7 @@ public class Workforce : MonoBehaviour
 
     public bool TryToAddWorker()
     {
-        if (!tryingToAddWorker)
+        if (!TryingToAddWorker)
         {
             StartCoroutine(TryToAddWorkerCoroutine());
             return true;
@@ -87,7 +87,7 @@ public class Workforce : MonoBehaviour
 
     private IEnumerator TryToAddWorkerCoroutine()
     {
-        tryingToAddWorker = true;
+        TryingToAddWorker = true;
         for (int i = 0; i < workers.Count; i++)
         {
             workers[i].readyForNewWord = false;
@@ -106,7 +106,7 @@ public class Workforce : MonoBehaviour
             workers[i].readyForNewWord = true;
             workers[i].timeRemainingOnCompletionDelay += Random.value; //a lil shake so they don't all resume at once.
         }
-        tryingToAddWorker = false;
+        TryingToAddWorker = false;
     }
 
     protected virtual Worker AddWorker()
