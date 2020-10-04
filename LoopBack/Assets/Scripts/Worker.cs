@@ -39,11 +39,7 @@ public class Worker
         //get { return (LastWordRequestedTime + AskDuration) - Time.time; }
     }
 
-    public float TimeRemainingOnCompletionDelay
-    {
-        get; protected set;
-        //get { return (LastWordCompleteTime + wordCompletePause) - Time.time; }
-    }
+    public float timeRemainingOnCompletionDelay;
 
     public char NextLetter
     {
@@ -89,7 +85,7 @@ public class Worker
         if (WordComplete)
         {
             //Word is finished
-            TimeRemainingOnCompletionDelay = wordCompletePause;
+            timeRemainingOnCompletionDelay = wordCompletePause;
             if(OnFinishWord != null)
                 OnFinishWord.Invoke(this);
         }
@@ -102,8 +98,8 @@ public class Worker
 
         if(TimeRemainingOnAsk > 0 && !selected)
             TimeRemainingOnAsk -= deltaTime;
-        if (TimeRemainingOnCompletionDelay > 0)
-            TimeRemainingOnCompletionDelay -= deltaTime;
+        if (timeRemainingOnCompletionDelay > 0)
+            timeRemainingOnCompletionDelay -= deltaTime;
 
         if (!WordComplete)
         {
@@ -114,7 +110,7 @@ public class Worker
         }
         else
         {
-            if (!Fired && TimeRemainingOnCompletionDelay < 0 && readyForNewWord)
+            if (!Fired && timeRemainingOnCompletionDelay < 0 && readyForNewWord)
             {
                 if(OnRequestNewWord != null)
                     OnRequestNewWord.Invoke(this);

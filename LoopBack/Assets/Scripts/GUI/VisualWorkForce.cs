@@ -12,7 +12,7 @@ namespace Work.GUI
         public WorkerGridReference workerGrid;
         public FiredWorkerGraphic firedWorker;
 
-        public override Worker AddWorker()
+        protected override Worker AddWorker()
         {
             Worker w = base.AddWorker();
             GameObject.Instantiate(workerVisualObject, workerParent.transform).GetComponent<VisualWorker>().SetWorker(w, workers.Count-1);

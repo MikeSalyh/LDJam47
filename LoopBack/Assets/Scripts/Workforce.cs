@@ -10,6 +10,8 @@ public class Workforce : MonoBehaviour
     public List<Worker> workers;
     protected Worker activeWorker;
 
+    protected bool tryingToAddWorker = false;
+
     public enum WorkState
     {
         workday,
@@ -39,7 +41,7 @@ public class Workforce : MonoBehaviour
             //Debug:
             if (Input.GetKeyDown(KeyCode.Alpha1))
             {
-                AddWorker();
+                TryToAddWorker();
             }
             else if (Input.GetKeyDown(KeyCode.Alpha2))
             {
@@ -59,7 +61,55 @@ public class Workforce : MonoBehaviour
         }
     }
 
-    public virtual Worker AddWorker()
+    public bool TryToAddWorker()
+    {
+        if (!tryingToAddWorker)
+        {
+            StartCoroutine(TryToAddWorkerCoroutine());
+            return true;
+        }
+        else
+        {
+            Debug.Log("Cannot add a new worker; already trying to add one");
+            return false;
+        }
+    }
+
+
+    private bool CheckAllWorkersDone()
+    {
+        for (int i = 0; i < workers.Count; i++)
+            if (!workers[i].WordComplete)
+                return false;
+
+        return true;
+    }
+
+    private IEnumerator TryToAddWorkerCoroutine()
+    {
+        tryingToAddWorker = true;
+        for (int i = 0; i < workers.Count; i++)
+        {
+            workers[i].readyForNewWord = false;
+        }
+        yield return new WaitUntil(
+            () => CheckAllWorkersDone());
+
+        yield return new WaitForSeconds(0.15f);
+        AddWorker();
+        yield return new WaitUntil(
+            () => CheckAllWorkersDone());
+
+        yield return new WaitForSeconds(1.25f);
+        for (int i = 0; i < workers.Count; i++)
+        {
+            workers[i].readyForNewWord = true;
+            workers[i].timeRemainingOnCompletionDelay += Random.value; //a lil shake so they don't all resume at once.
+        }
+        tryingToAddWorker = false;
+    }
+
+    protected virtual Worker AddWorker()
     {
         Worker newWorker = new Worker();
         newWorker.OnRequestNewWord += GenerateNewWord;

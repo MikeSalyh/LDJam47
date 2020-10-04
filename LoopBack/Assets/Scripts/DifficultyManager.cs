@@ -23,22 +23,23 @@ public class DifficultyManager : MonoBehaviour
 
     private IEnumerator AddWorkers()
     {
-        yield return new WaitForSeconds(0.5f);
-        yield return new WaitUntil(() => workforce.currentWorkState == Workforce.WorkState.workday);
-        workforce.AddWorker();
-        yield return new WaitForSeconds(3f);
-        yield return new WaitUntil(() => workforce.currentWorkState == Workforce.WorkState.workday);
-        workforce.AddWorker();
+        //yield return new WaitForSeconds(0.5f);
+        //yield return new WaitUntil(() => workforce.currentWorkState == Workforce.WorkState.workday);
+        //workforce.TryToAddWorker();
+        //yield return new WaitForSeconds(3f);
+        //yield return new WaitUntil(() => workforce.currentWorkState == Workforce.WorkState.workday);
+        //workforce.AddWorker();
 
-        float addInterval = 8f;
-        while (workforce.workers.Count < Workforce.MAX_WORKERS)
-        {
-            yield return new WaitForSeconds(addInterval);
-            yield return new WaitUntil(() => workforce.currentWorkState == Workforce.WorkState.workday);
-            workforce.AddWorker();
-            addInterval += 2;
-        }
+        //float addInterval = 8f;
+        //while (workforce.workers.Count < Workforce.MAX_WORKERS)
+        //{
+        //    yield return new WaitForSeconds(addInterval);
+        //    yield return new WaitUntil(() => workforce.currentWorkState == Workforce.WorkState.workday);
+        //    workforce.AddWorker();
+        //    addInterval += 2;
+        //}
 
+        yield break;
         //Handle winning end-game.
     }
 
