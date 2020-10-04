@@ -504,9 +504,9 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 59952ecb5500cdd419c4b72b1ce00430, type: 3}
+  m_audioClip: {fileID: 8300000, guid: 9657c2521166afc4e9a521a8cb9224c5, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 1
+  m_Volume: 0.2
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -645,9 +645,8 @@ MonoBehaviour:
   workerGrid: {fileID: 1003812055}
   popup: {fileID: 552247958}
   newWorkerSFX: {fileID: 8300000, guid: 82d7b06ca97b6b64d9c0c8acd22b41d8, type: 3}
-  workerDoneSFX: {fileID: 8300000, guid: 2b70acb9598ea0b40ab29c712cf1b248, type: 3}
   firedSFX: {fileID: 8300000, guid: 5ee9494a94767b2429f141dc5038bbdb, type: 3}
-  winSFX: {fileID: 0}
+  winSFX: {fileID: 8300000, guid: 37d31f97e1e6e494687932f7e06feaf3, type: 3}
   workAudioSource: {fileID: 886783967}
 --- !u!114 &930051534
 MonoBehaviour:
