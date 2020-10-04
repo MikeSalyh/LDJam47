@@ -35,7 +35,7 @@ namespace Work.GUI
             if (activeWorker != null)
             {
                 VisualWorker vw = activeWorker.visualRepresentation.GetComponent<VisualWorker>();
-                vw.ResetBackground();
+                vw.HandleNewWord();
             }
             base.ReleaseActiveWorker(w);
         }

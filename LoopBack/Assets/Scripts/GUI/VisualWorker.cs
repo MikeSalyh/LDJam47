@@ -11,15 +11,13 @@ namespace Work.GUI
     public class VisualWorker : MonoBehaviour
     {
         public Worker AssociatedWorker { get; private set; }
-        public TextMeshProUGUI wordLabel;
-        public TextMeshProUGUI timeLeftLabel;
-        public Slider timeRemaining;
         public Image background;
         private Color defaultColor;
         private RectTransform rt;
         private CanvasGroup cg;
         public float transitionTime = 0.5f;
         private float defaultSize;
+        public WordPromptGUI wordPrompt;
 
         private static readonly string workStartString = "<color=yellow>";
         private static readonly string workEndString = "</color>";
@@ -41,18 +39,10 @@ namespace Work.GUI
         {
             if (AssociatedWorker != null)
             {
-                if (!AssociatedWorker.Fired)
+                if (!AssociatedWorker.Fired && !AssociatedWorker.WordComplete)
                 {
-                    wordLabel.text = GenerateLabel();
-                    if (AssociatedWorker.WordComplete)
-                    {
-                        background.color = Color.green;
-                    }
-                    else
-                    {
-                        HandleTimeRemaining();
-                        timeLeftLabel.text = AssociatedWorker.TimeRemainingOnAsk.ToString("0");
-                    }
+                    wordPrompt.wordLabel.text = GenerateLabel();
+                    HandleTimeRemaining();
                 }
             }
         }
@@ -60,26 +50,35 @@ namespace Work.GUI
         private void HandleTimeRemaining()
         {
             float t = 1 - Mathf.InverseLerp(AssociatedWorker.latestAskDuration, 0f, AssociatedWorker.TimeRemainingOnAsk);
-            timeRemaining.value = t;
+            wordPrompt.timeRemaining.value = t;
         }
 
-        public void ResetBackground(Worker w = null)
+        public void HandleNewWord(Worker w = null)
         {
             background.color = defaultColor;
+            wordPrompt.gameObject.SetActive(true);
         }
 
         private void TintBackground(Worker w)
         {
-            background.color = Color.cyan;
+            background.color = Color.blue;
+            wordPrompt.background.color = Color.blue;
         }
 
         public void SetWorker(Worker w)
         {
             AssociatedWorker = w;
             w.visualRepresentation = this.gameObject;
-            AssociatedWorker.OnRequestNewWord += ResetBackground;
+            AssociatedWorker.OnFinishWord += HandleWordFinished;
+            AssociatedWorker.OnRequestNewWord += HandleNewWord;
             AssociatedWorker.OnSelected += TintBackground;
             AssociatedWorker.OnFired += HandleFired;
+        }
+
+        private void HandleWordFinished(Worker w)
+        {
+            background.color = Color.green;
+            wordPrompt.gameObject.SetActive(false);
         }
 
         private string GenerateLabel()
@@ -128,7 +127,7 @@ namespace Work.GUI
         private void RemoveListeners()
         {
             if (AssociatedWorker == null) return;
-            AssociatedWorker.OnRequestNewWord -= ResetBackground;
+            AssociatedWorker.OnRequestNewWord -= HandleNewWord;
             AssociatedWorker.OnSelected -= TintBackground;
             AssociatedWorker.OnFired -= HandleFired;
         }
@@ -136,7 +135,7 @@ namespace Work.GUI
         private void HandleFired(Worker w)
         {
             background.color = Color.black;
-            wordLabel.text = "<color=red>FIRED!</color>";
+            wordPrompt.wordLabel.text = "<color=red>FIRED!</color>";
         }
     }
 }

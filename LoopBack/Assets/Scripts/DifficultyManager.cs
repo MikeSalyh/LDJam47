@@ -38,6 +38,8 @@ public class DifficultyManager : MonoBehaviour
             workforce.AddWorker();
             addInterval += 2;
         }
+
+        //Handle winning end-game.
     }
 
     private void NewLevel()

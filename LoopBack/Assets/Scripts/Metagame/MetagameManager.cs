@@ -11,6 +11,7 @@ public class MetagameManager : MonoBehaviour
     public CanvasGroup dimPlane;
     public int score = 0;
     public int level = 0;
+    public int numWorkers = 0;
 
     public enum GameState
     {
@@ -116,6 +117,7 @@ public class MetagameManager : MonoBehaviour
             case GameState.Menu:
                 score = 0;
                 level = 0;
+                numWorkers = 0;
                 break;
             case GameState.Gameplay:
                 break;
