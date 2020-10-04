@@ -25,17 +25,13 @@ public class DifficultyManager : MonoBehaviour
     {
         yield return new WaitForSeconds(0.25f);
         workforce.TryToAddWorker();
-        yield return new WaitForSeconds(3f);
-        yield return new WaitUntil(() => !workforce.TryingToAddWorker);
-        workforce.TryToAddWorker();
-
-        float addInterval = 8f;
+        yield return new WaitForSeconds(1f);
         while (workforce.workers.Count < Workforce.MAX_WORKERS)
         {
-            yield return new WaitForSeconds(addInterval);
+            int pointsToNextHire = MetagameManager.instance.score + (workforce.workers.Count * 2);  //you need to do X words / person
+            yield return new WaitUntil(()=> MetagameManager.instance.score > pointsToNextHire);
             yield return new WaitUntil(() => !workforce.TryingToAddWorker);
             workforce.TryToAddWorker();
-            addInterval += 2;
         }
 
         yield break;

@@ -104,7 +104,7 @@ public class Workforce : MonoBehaviour
         for (int i = 0; i < workers.Count; i++)
         {
             workers[i].readyForNewWord = true;
-            workers[i].timeRemainingOnCompletionDelay += Random.value; //a lil shake so they don't all resume at once.
+            workers[i].timeRemainingOnCompletionDelay += Random.value / 5f; //a lil shake so they don't all resume at once.
         }
         TryingToAddWorker = false;
     }
@@ -117,6 +117,7 @@ public class Workforce : MonoBehaviour
         newWorker.OnFired += HandleWorkerFired;
         GenerateNewWord(newWorker);
         workers.Add(newWorker);
+        newWorker.selected = true;
         return newWorker;
     }
 
