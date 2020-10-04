@@ -61,8 +61,8 @@ namespace Work.GUI
 
         private void TintBackground(Worker w)
         {
-            background.color = Color.blue;
-            wordPrompt.background.color = Color.blue;
+            background.color = Color.magenta;
+            wordPrompt.background.color = Color.magenta;
         }
 
         public void SetWorker(Worker w)

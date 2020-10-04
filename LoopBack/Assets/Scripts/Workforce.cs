@@ -135,6 +135,8 @@ public class Workforce : MonoBehaviour
 
     protected virtual void ReleaseActiveWorker(Worker w)
     {
+        if(activeWorker != null)
+            activeWorker.selected = false;
         activeWorker = null;
     }
 
@@ -161,6 +163,7 @@ public class Workforce : MonoBehaviour
                 if (Input.GetKeyDown(reqChar))
                 {
                     activeWorker = workers[i];
+                    activeWorker.selected = true;
                     if(workers[i].OnSelected != null)
                         workers[i].OnSelected.Invoke(workers[i]); //This is a little janky, no?
                     activeWorker.DoWork();

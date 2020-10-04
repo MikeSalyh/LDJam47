@@ -11,6 +11,8 @@ public class Worker
     public WordEvent OnRequestNewWord;
     public WordEvent OnFinishWord;
 
+    public bool selected;
+
     public float wordCompletePause = 1f;
 
     public GameObject visualRepresentation;
@@ -66,6 +68,7 @@ public class Worker
             WorkDone = 0;
             latestAskDuration = DifficultyManager.GetAskDuration();
             TimeRemainingOnAsk = latestAskDuration;
+            selected = false;
         }
     }
 
@@ -93,7 +96,10 @@ public class Worker
 
     public void UpdateWorker(float deltaTime)
     {
-        if(TimeRemainingOnAsk > 0)
+        if (selected)
+            TimeRemainingOnAsk = latestAskDuration;
+
+        if(TimeRemainingOnAsk > 0 && !selected)
             TimeRemainingOnAsk -= deltaTime;
         if (TimeRemainingOnCompletionDelay > 0)
             TimeRemainingOnCompletionDelay -= deltaTime;
