@@ -9,49 +9,43 @@ namespace Work.GUI
 {
     public class FiredWorkerGraphic : MonoBehaviour
     {
-        public TextMeshProUGUI wordLabel;
-        public Image background;
+        public CanvasGroup firedLabel;
+        public CanvasGroup firedFade;
         private RectTransform rt;
         private CanvasGroup cg;
         public float transitionTime = 0.5f;
-        private Color defaultColor;
         private float defaultScale;
         private Vector2 defaultPosition;
+        public WorkerAnimation anim;
 
         private void Awake()
         {
             rt = GetComponent<RectTransform>();
             defaultScale = transform.localScale.x;
             defaultPosition = transform.position;
-            defaultColor = background.color;
             cg = GetComponent<CanvasGroup>();
         }
 
         private void OnEnable()
         {
-            background.color = defaultColor;
+            firedLabel.alpha = 0f;
+            firedFade.alpha = 0f;
         }
 
-        public void SetToFiredMode()
-        {
-            background.color = Color.black;
-            wordLabel.text = "<color=red>FIRED!</color>";
-        }
-
-        public void Appear(string label, RectTransform t, float time = 1f)
+        public IEnumerator Appear(VisualWorker w, RectTransform t, float time = 1f)
         {
             gameObject.SetActive(true);
-            wordLabel.text = label;
             transform.position = t.position;
             transform.localScale = t.localScale;
             transform.DOMove(defaultPosition, time);
             transform.DOScale(defaultScale, time);
-        }
-
-        public void GoAway(RectTransform t, float time = 1f)
-        {
-            transform.DOMove(t.position, time);
-            transform.DOScale(t.localScale, time).onComplete += () => { gameObject.SetActive(false); };
+            anim.SetCharacter(w.anim.CharacterIndex);
+            yield return new WaitForSeconds(time + 0.5f);
+            firedFade.alpha = 1f;
+            firedLabel.alpha = 1f;
+            transform.DOScale(transform.localScale * 0.8f, 0.1f).SetEase(Ease.OutQuad);
+            yield return new WaitForSeconds(0.1f);
+            transform.DOScale(defaultScale, 0.25f).SetEase(Ease.OutQuad);
         }
     }
 }

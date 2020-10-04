@@ -78,9 +78,6 @@ public class DifficultyManager : MonoBehaviour
 
     public static float GetAskDuration()
     {
-        return 10f;
-
-        //float val = Mathf.InverseLerp(10, 0, MetagameManager.instance.level);
-        //return Mathf.Lerp(10f, 5f, val);
+        return 12f;
     }
 }

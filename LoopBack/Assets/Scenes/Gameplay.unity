@@ -325,7 +325,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   workers: []
-  maxLives: 1
   currentWorkState: 0
   workerVisualObject: {fileID: 8507141393161130162, guid: 732007735974eb74ca1dd2e611ea5086,
     type: 3}
@@ -786,7 +785,7 @@ PrefabInstance:
     - target: {fileID: 3937837580971420187, guid: aca49656d325b1147a382adbf267c1f9,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -39.13
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3937837580971420187, guid: aca49656d325b1147a382adbf267c1f9,
         type: 3}

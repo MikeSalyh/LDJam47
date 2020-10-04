@@ -42,13 +42,10 @@ namespace Work.GUI
 
         protected override IEnumerator DoFiredWorkerAnimation(Worker w)
         {
-            workerParent.DOFade(0.5f, 0.5f);
+            workerParent.DOFade(0f, 0.5f);
             w.visualRepresentation.GetComponent<CanvasGroup>().alpha = 0f;
-            firedWorker.Appear(w.visualRepresentation.GetComponentInChildren<TextMeshProUGUI>().text, w.visualRepresentation.GetComponent<RectTransform>(), 0.5f);
-                //This will need to be adjusted once I have the real graphics.
-            yield return new WaitForSeconds(0.75f);
-            firedWorker.SetToFiredMode();
-            yield return new WaitForSeconds(0.5f);
+            yield return firedWorker.Appear(w.visualRepresentation.GetComponentInChildren<VisualWorker>(), w.visualRepresentation.GetComponent<RectTransform>(), 0.5f);
+            yield return new WaitForSeconds(1.5f);
         }
     }
 }
