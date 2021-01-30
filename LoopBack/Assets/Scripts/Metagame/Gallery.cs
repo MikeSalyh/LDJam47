@@ -24,6 +24,18 @@ public class Gallery : MonoBehaviour
         label.text = string.Format(labelString, currentIndex + 1, Workforce.MAX_WORKERS);
     }
 
+    private void OnEnable()
+    {
+        Invoke("PlayClip", 0.1f);
+    }
+
+    void PlayClip()
+    {
+        anim.SetCharacter(currentIndex);
+        anim.PlayLoop();
+        hider.SetActive(currentIndex >= MetagameManager.instance.MaxWorkersUnlocked);
+    }
+
     public void MoveForward()
     {
         currentIndex++;
